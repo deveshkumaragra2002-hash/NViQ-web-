@@ -1,124 +1,97 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-const express      = require('express');
-const helmet       = require('helmet');
-const cors         = require('cors');
-const rateLimit    = require('express-rate-limit');
-const path         = require('path');
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
+import mongoose from 'mongoose';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const connectDB    = require('./config/db');
-const errorHandler = require('./middleware/errorHandler');
+// routes
+import authRoutes from './routes/authRoutes.js';
+import companyRoutes from './routes/companyRoutes.js';
+import servicesRoutes from './routes/servicesRoutes.js';
+import fundsRoutes from './routes/fundsRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
 
-// ─── Route imports ─────────────────────────────────────────
-const authRoutes     = require('./routes/authRoutes');
-const companyRoutes  = require('./routes/companyRoutes');
-const servicesRoutes = require('./routes/servicesRoutes');
-const fundsRoutes    = require('./routes/fundsRoutes');
-const contactRoutes  = require('./routes/contactRoutes');
+// fix __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
 
-// 🔥 IMPORTANT: Lazy DB connect (Vercel fix)
+// 🔥 MongoDB connect
 let isConnected = false;
 
-const initDB = async () => {
-  if (!isConnected) {
-    try {
-      await connectDB();
-      isConnected = true;
-      console.log("✅ DB Connected");
-    } catch (err) {
-      console.error("❌ DB Error:", err.message);
-    }
+const connectDB = async () => {
+  if (isConnected) return;
+
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    isConnected = true;
+    console.log("✅ MongoDB Connected");
+  } catch (err) {
+    console.error("❌ DB Error:", err.message);
   }
 };
 
 
-// ─── Security middleware ───────────────────────────────────
+// 🔐 Security
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
-const allowedOrigins = [
-  process.env.CLIENT_URL,
-  'http://localhost:4200',
-  /\.vercel\.app$/,
-].filter(Boolean);
 
+// 🌐 CORS
 app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin) return cb(null, true);
-    const allowed = allowedOrigins.some(o =>
-      o instanceof RegExp ? o.test(origin) : o === origin
-    );
-    cb(null, allowed ? origin : false);
-  },
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: ['http://localhost:4200', /\.vercel\.app$/],
   credentials: true,
 }));
 
 
-// ─── Rate limiting ─────────────────────────────────────────
-const globalLimiter = rateLimit({
+// 🚦 Rate limit
+app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 200,
-});
-
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-});
-
-const contactLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 5,
-});
-
-app.use(globalLimiter);
+}));
 
 
-// ─── Body parsers ─────────────────────────────────────────
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// 📦 Body
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
-// ─── Static uploads ───────────────────────────────────────
+// 📁 Static
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-// 🔥 Health check (DB init here)
+// 🧪 Health route
 app.get('/api/health', async (req, res) => {
-  await initDB();
+  await connectDB();
 
-  res.status(200).json({
+  res.json({
     success: true,
-    message: 'Backend Running 🚀',
+    message: "Backend Running 🚀"
   });
 });
 
 
-// 🔥 API routes (DB init before every request)
-app.use('/api/auth',     authLimiter, async (req, res, next) => { await initDB(); next(); }, authRoutes);
-app.use('/api/company',  async (req, res, next) => { await initDB(); next(); }, companyRoutes);
-app.use('/api/services', async (req, res, next) => { await initDB(); next(); }, servicesRoutes);
-app.use('/api/funds',    async (req, res, next) => { await initDB(); next(); }, fundsRoutes);
-app.use('/api/contact',  contactLimiter, async (req, res, next) => { await initDB(); next(); }, contactRoutes);
+// 🔥 API routes
+app.use('/api/auth', async (req, res, next) => { await connectDB(); next(); }, authRoutes);
+app.use('/api/company', async (req, res, next) => { await connectDB(); next(); }, companyRoutes);
+app.use('/api/services', async (req, res, next) => { await connectDB(); next(); }, servicesRoutes);
+app.use('/api/funds', async (req, res, next) => { await connectDB(); next(); }, fundsRoutes);
+app.use('/api/contact', async (req, res, next) => { await connectDB(); next(); }, contactRoutes);
 
 
-// ─── 404 handler ──────────────────────────────────────────
+// ❌ 404
 app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `Route ${req.method} ${req.originalUrl} not found`,
-  });
+  res.status(404).json({ message: "Route not found" });
 });
 
 
-// ─── Error handler ────────────────────────────────────────
-app.use(errorHandler);
-
-
-// ❗ Vercel के लिए जरूरी
-module.exports = app;
+// ❗❗ Vercel serverless export
+export default app;

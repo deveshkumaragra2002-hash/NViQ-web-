@@ -99,10 +99,10 @@ import { CtaFinalComponent } from '../../components/cta-final/cta-final.componen
     }
     .mf-slide-active { opacity: 1; transform: scale(1); pointer-events: auto; }
 
-    /* Gradient backgrounds per slide */
-    .mf-slide-bg-0 { background: linear-gradient(135deg, #020B18 0%, #051830 40%, #0A2444 70%, #020B18 100%); }
-    .mf-slide-bg-1 { background: linear-gradient(135deg, #020B10 0%, #043020 40%, #063B28 70%, #020B10 100%); }
-    .mf-slide-bg-2 { background: linear-gradient(135deg, #100A1E 0%, #220B3A 40%, #2D0B4E 70%, #100A1E 100%); }
+    /* Real image backgrounds */
+    .mf-slide-bg-0 { background: linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.6)), url('images/mf%20slide-1.jpg.jpg') center/cover no-repeat; }
+    .mf-slide-bg-1 { background: linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.6)), url('images/mf%20slide-2.jpg.webp') center/cover no-repeat; }
+    .mf-slide-bg-2 { background: linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.6)), url('images/mf%20slide-3.jpg.jpg') center/cover no-repeat; }
 
     .mf-slide-overlay {
       position: absolute; inset: 0; z-index: 0;

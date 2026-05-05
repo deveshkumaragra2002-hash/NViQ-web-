@@ -487,8 +487,13 @@ import { ComingSoonSectionComponent } from '../coming-soon/coming-soon-section.c
 
     @media (max-width: 768px) {
       .gps-slider { height: 100svh; min-height: 500px; }
-      .gps-slide  { padding: 0 24px; align-items: flex-end; padding-bottom: 100px; }
-      .gps-arrow  { width: 40px; height: 40px; }
+      .gps-slide  { padding: 0 20px; align-items: center; padding-top: 80px; }
+      .gps-slide-title { font-size: clamp(1.6rem, 6vw, 2.4rem); }
+      .gps-slide-desc  { font-size: 0.9rem; margin-bottom: 20px; }
+      .gps-arrow  { width: 36px; height: 36px; }
+      .gps-arrow-prev { left: 8px; }
+      .gps-arrow-next { right: 8px; }
+      .gps-slide-content { max-width: 100%; }
     }
 
     @media (max-width: 900px) {

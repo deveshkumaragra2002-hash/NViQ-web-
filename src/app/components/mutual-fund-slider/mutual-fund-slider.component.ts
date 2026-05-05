@@ -256,16 +256,12 @@ export interface MFSlide {
               </span>
 
               <!-- Icon -->
-              <div class="slide-icon"
-                [style.background]="'linear-gradient(135deg,' + slide.iconGrad[0] + ',' + slide.iconGrad[1] + ')'">
+              <div class="slide-icon" [ngClass]="'icon-grad-' + ((i % 7))">
                 <span class="icon-num">{{ String(i + 1).padStart(2, '0') }}</span>
               </div>
 
               <!-- Tag -->
-              <span class="slide-tag"
-                [style.color]="slide.iconGrad[0]"
-                [style.border-color]="slide.iconGrad[0] + '44'"
-                [style.background]="slide.iconGrad[0] + '11'">
+              <span class="slide-tag" [ngClass]="'tag-color-' + ((i % 7))">
                 {{ slide.tag }}
               </span>
 
@@ -907,6 +903,23 @@ export interface MFSlide {
     }
     .sip-invest-btn svg { transition: transform 0.2s ease; }
     .sip-invest-btn:hover svg { transform: translateX(4px); }
+
+    /* ─── Icon & Tag gradient classes (Swiper-clone safe) ── */
+    .icon-grad-0 { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+    .icon-grad-1 { background: linear-gradient(135deg, #0EA5E9, #06B6D4); }
+    .icon-grad-2 { background: linear-gradient(135deg, #8B5CF6, #6366F1); }
+    .icon-grad-3 { background: linear-gradient(135deg, #F59E0B, #EF4444); }
+    .icon-grad-4 { background: linear-gradient(135deg, #F43F5E, #E11D48); }
+    .icon-grad-5 { background: linear-gradient(135deg, #3B82F6, #6366F1); }
+    .icon-grad-6 { background: linear-gradient(135deg, #A855F7, #3B82F6); }
+
+    .tag-color-0 { color: #3B82F6; border-color: #3B82F644; background: #3B82F611; }
+    .tag-color-1 { color: #0EA5E9; border-color: #0EA5E944; background: #0EA5E911; }
+    .tag-color-2 { color: #8B5CF6; border-color: #8B5CF644; background: #8B5CF611; }
+    .tag-color-3 { color: #F59E0B; border-color: #F59E0B44; background: #F59E0B11; }
+    .tag-color-4 { color: #F43F5E; border-color: #F43F5E44; background: #F43F5E11; }
+    .tag-color-5 { color: #3B82F6; border-color: #3B82F644; background: #3B82F611; }
+    .tag-color-6 { color: #A855F7; border-color: #A855F744; background: #A855F711; }
 
     /* ─── Responsive ─────────────────────────────────────  */
     @media (max-width: 900px) {

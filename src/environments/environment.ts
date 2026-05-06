@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: '/api'
+  apiUrl: 'https://n-vi-q-web-7hsg.vercel.app/api'
 };

@@ -41,7 +41,7 @@ const contactSchema = new mongoose.Schema(
     },
     source: {
       type: String,
-      enum: ['contact-form', 'lead-modal', 'other'],
+      enum: ['contact-form', 'lead-modal', 'other', 'gps-enquiry', 'mf-enquiry', 'fastag-enquiry', 'drone-enquiry'],
       default: 'contact-form',
     },
   },

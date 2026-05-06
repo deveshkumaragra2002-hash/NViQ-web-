@@ -19,7 +19,7 @@ const contactRules = [
     .isLength({ min: 5, max: 2000 }).withMessage('Message must be 5–2000 characters'),
   body('source')
     .optional()
-    .isIn(['contact-form', 'lead-modal', 'other']),
+    .isIn(['contact-form', 'lead-modal', 'other', 'gps-enquiry', 'mf-enquiry', 'fastag-enquiry', 'drone-enquiry']),
 ];
 
 // ─── Routes ───────────────────────────────────────────────────────────────────

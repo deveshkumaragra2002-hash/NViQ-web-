@@ -116,6 +116,7 @@ import { ComingSoonSectionComponent } from '../coming-soon/coming-soon-section.c
       <app-features-section [productType]="'mf'"></app-features-section>
       <app-benefits-section [productType]="'mf'"></app-benefits-section>
       <app-mutual-fund-pricing></app-mutual-fund-pricing>
+      <app-review-form [productType]="'mf'"></app-review-form>
       <app-cta-section [product]="'mf'" (openModal)="nav.openModalFor('mf')"></app-cta-section>
     </ng-container>
 

@@ -347,7 +347,7 @@ Invest Smart. Grow Wealth.
 
       <!-- Disclaimer -->
       <p class="mf-disclaimer">
-        ⚠️ Mutual Funds are subject to market risks. Read all scheme-related documents carefully before investing.
+        ⚠️ Mutual Funds are subject to market risks. Read all scheme-related documents carefully before investing. &nbsp;|&nbsp; AMFI Registered · ARN No: 359231
       </p>
 
     </section>

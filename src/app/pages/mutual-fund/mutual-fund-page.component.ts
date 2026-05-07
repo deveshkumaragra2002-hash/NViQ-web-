@@ -421,7 +421,7 @@ export class MutualFundPageComponent implements OnInit, OnDestroy {
     {
       tag: 'SIP Investing',
       title: 'Start Your SIP Journey Today',
-      desc: 'Invest as little as ₹1,000/month and watch your wealth grow with the power of compounding. SEBI-registered, zero commission.',
+      desc: 'Invest as little as ₹1,000/month and watch your wealth grow with the power of compounding. AMFI-registered, zero commission.',
       stats: [
         { val: '₹1,000', label: 'Min SIP Amount' },
         { val: '15%+', label: 'Avg. Returns' },
@@ -441,10 +441,10 @@ export class MutualFundPageComponent implements OnInit, OnDestroy {
     {
       tag: 'Secure & Trusted',
       title: 'Bank-Grade Security for Your Money',
-      desc: 'Your investments are protected with 256-bit encryption, two-factor authentication, and full SEBI/AMFI compliance.',
+      desc: 'Your investments are protected with 256-bit encryption, two-factor authentication, and full AMFI compliance. ARN No: 359231.',
       stats: [
         { val: '256-bit', label: 'Encryption' },
-        { val: 'SEBI', label: 'Registered' },
+        { val: 'AMFI', label: 'ARN: 359231' },
         { val: '₹0', label: 'Hidden Charges' },
       ]
     },

@@ -7,6 +7,7 @@ import { BenefitsSectionComponent } from '../benefits/benefits-section.component
 import { ProblemSectionComponent } from '../problem/problem-section.component';
 import { LiveTrackingSectionComponent } from '../live-tracking/live-tracking-section.component';
 import { PricingSectionComponent } from '../pricing/pricing-section.component';
+import { ReviewFormComponent } from '../review-form/review-form.component';
 import { CtaSectionComponent } from '../cta/cta-section.component';
 import { MutualFundSliderComponent } from '../mutual-fund-slider/mutual-fund-slider.component';
 import { MutualFundPricingComponent } from '../mutual-fund-pricing/mutual-fund-pricing.component';
@@ -22,6 +23,7 @@ import { ComingSoonSectionComponent } from '../coming-soon/coming-soon-section.c
     ProblemSectionComponent,
     LiveTrackingSectionComponent,
     PricingSectionComponent,
+    ReviewFormComponent,
     CtaSectionComponent,
     MutualFundSliderComponent,
     MutualFundPricingComponent,
@@ -91,6 +93,7 @@ import { ComingSoonSectionComponent } from '../coming-soon/coming-soon-section.c
       <app-benefits-section [productType]="'gps'"></app-benefits-section>
       <app-problem-section></app-problem-section>
       <app-live-tracking-section></app-live-tracking-section>
+      <app-review-form [productType]="'gps'"></app-review-form>
       <app-pricing-section (openModal)="nav.openModalFor('gps')"></app-pricing-section>
       <app-cta-section (openModal)="nav.openModalFor('gps')"></app-cta-section>
     </ng-container>

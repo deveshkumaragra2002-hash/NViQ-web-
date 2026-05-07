@@ -8,6 +8,8 @@ import { CtaSectionComponent } from '../../components/cta/cta-section.component'
 import { TiltDirective } from '../../directives/tilt.directive';
 import { RevealDirective } from '../../directives/reveal.directive';
 import { ParticleCanvasComponent } from '../../components/particle-canvas/particle-canvas.component';
+import { ReviewFormComponent } from '../../components/review-form/review-form.component';
+
 @Component({
   selector: 'app-mutual-fund-page',
   standalone: true,
@@ -19,6 +21,7 @@ import { ParticleCanvasComponent } from '../../components/particle-canvas/partic
     TiltDirective,
     RevealDirective,
     ParticleCanvasComponent,
+    ReviewFormComponent,
   ],
   template: `
     <!-- Back bar -->
@@ -94,6 +97,9 @@ import { ParticleCanvasComponent } from '../../components/particle-canvas/partic
     <div appReveal="up" [revealDelay]="100">
       <app-mutual-fund-pricing></app-mutual-fund-pricing>
     </div>
+
+    <!-- User Reviews -->
+    <app-review-form [productType]="'mf'"></app-review-form>
 
     <!-- CTA -->
     <div appReveal="up" [revealDelay]="80">

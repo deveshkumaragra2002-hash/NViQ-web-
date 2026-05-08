@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface Testimonial {
@@ -42,82 +42,115 @@ interface Testimonial {
         </div>
 
         <!-- Featured testimonial -->
-        <div class="featured-testimonial">
+        <div class="featured-testimonial"
+          (mouseenter)="pauseFeaturedCarousel()"
+          (mouseleave)="resumeFeaturedCarousel()">
           <div class="ft-quote-mark">"</div>
           <blockquote class="ft-quote">
-            NViQ completely changed how we manage our 80-vehicle fleet. The live map reduced driver disputes by 90%, and we cut our fuel costs by ₹3.2 lakh in the very first quarter. I only wish we'd switched sooner.
+            {{ featured.quote }}
           </blockquote>
           <div class="ft-author">
-            <div class="ft-avatar" style="background: linear-gradient(135deg, #00D4FF, #6366F1)">VS</div>
+            <div class="ft-avatar" [style.background]="featured.avatarColor">{{ featured.initials }}</div>
             <div>
-              <div class="ft-name">Vikram Sinha</div>
-              <div class="ft-role">Director of Operations · LogiStar India</div>
+              <div class="ft-name">{{ featured.name }}</div>
+              <div class="ft-role">{{ featured.role }} · {{ featured.company }}</div>
             </div>
-            <div class="ft-metric">
-              <span class="ft-metric-val" style="color:#10B981">₹3.2L</span>
-              <span class="ft-metric-label">saved in Q1</span>
+            <div class="ft-metric" *ngIf="featured.metric">
+              <span class="ft-metric-val" [style.color]="featured.metricColor">{{ featured.metric }}</span>
+              <span class="ft-metric-label">{{ featured.metricLabel }}</span>
             </div>
+          </div>
+
+          <div class="ft-dots" *ngIf="featuredTestimonials.length > 1">
+            <button *ngFor="let t of featuredTestimonials; let i = index"
+              type="button"
+              class="ft-dot"
+              [class.ft-dot-active]="i === featuredIndex"
+              (click)="featuredIndex = i"
+              [attr.aria-label]="'Featured review ' + (i + 1)">
+            </button>
           </div>
         </div>
 
-        <!-- Cards grid -->
-        <div class="testimonials-grid">
-          <article class="t-card" *ngFor="let t of testimonials; let i = index"
-            [style.animation-delay]="(i * 0.1) + 's'">
+        <!-- Actions -->
+        <div class="t-actions">
+          <button type="button" class="t-more-btn"
+            (click)="toggleExpanded()"
+            [attr.aria-expanded]="expanded"
+            [attr.aria-controls]="expandedDomId">
+            <span>{{ expanded ? 'Hide Reviews' : 'View More Reviews' }}</span>
+            <svg class="t-more-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              [style.transform]="expanded ? 'rotate(180deg)' : 'none'">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+        </div>
 
-            <!-- Stars -->
-            <div class="t-stars">
-              <svg *ngFor="let s of [1,2,3,4,5]" width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
+        <!-- Expanded content -->
+        <div [attr.id]="expandedDomId" #expandAnchor class="t-expand" [class.expanded]="expanded">
+          <div class="t-expand-inner">
+
+            <!-- Cards grid -->
+            <div class="testimonials-grid">
+              <article class="t-card" *ngFor="let t of moreTestimonials; let i = index"
+                [style.animation-delay]="(i * 0.1) + 's'">
+
+                <!-- Stars -->
+                <div class="t-stars">
+                  <svg *ngFor="let s of [1,2,3,4,5]" width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                </div>
+
+                <!-- Quote -->
+                <p class="t-quote">"{{ t.quote }}"</p>
+
+                <!-- Metric highlight -->
+                <div class="t-metric">
+                  <span class="t-metric-val" [style.color]="t.metricColor">{{ t.metric }}</span>
+                  <span class="t-metric-label">{{ t.metricLabel }}</span>
+                </div>
+
+                <!-- Author -->
+                <div class="t-author">
+                  <div class="t-avatar" [style.background]="t.avatarColor">{{ t.initials }}</div>
+                  <div class="t-author-info">
+                    <div class="t-name">{{ t.name }}</div>
+                    <div class="t-role">{{ t.role }} · {{ t.company }}</div>
+                  </div>
+                </div>
+
+                <!-- Card glow on hover -->
+                <div class="t-card-shine" aria-hidden="true"></div>
+              </article>
             </div>
 
-            <!-- Quote -->
-            <p class="t-quote">"{{ t.quote }}"</p>
-
-            <!-- Metric highlight -->
-            <div class="t-metric">
-              <span class="t-metric-val" [style.color]="t.metricColor">{{ t.metric }}</span>
-              <span class="t-metric-label">{{ t.metricLabel }}</span>
-            </div>
-
-            <!-- Author -->
-            <div class="t-author">
-              <div class="t-avatar" [style.background]="t.avatarColor">{{ t.initials }}</div>
-              <div class="t-author-info">
-                <div class="t-name">{{ t.name }}</div>
-                <div class="t-role">{{ t.role }} · {{ t.company }}</div>
+            <!-- Social proof bar -->
+            <div class="social-proof-bar">
+              <div class="sp-item">
+                <div class="sp-avatars">
+                  <div class="sp-avatar" style="background:linear-gradient(135deg,#00D4FF,#6366F1)">R</div>
+                  <div class="sp-avatar" style="background:linear-gradient(135deg,#10B981,#00D4FF)">M</div>
+                  <div class="sp-avatar" style="background:linear-gradient(135deg,#F59E0B,#F43F5E)">A</div>
+                  <div class="sp-avatar" style="background:linear-gradient(135deg,#6366F1,#8B5CF6)">P</div>
+                  <div class="sp-avatar sp-more">+996</div>
+                </div>
+                <div class="sp-text">
+                  <strong>1,000+ fleet managers</strong> trust NViQ every day
+                </div>
+              </div>
+              <div class="sp-divider"></div>
+              <div class="sp-rating">
+                <div class="sp-stars">
+                  <svg *ngFor="let s of [1,2,3,4,5]" width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                </div>
+                <span class="sp-rating-val">4.9 / 5.0</span>
+                <span class="sp-rating-label">average rating</span>
               </div>
             </div>
-
-            <!-- Card glow on hover -->
-            <div class="t-card-shine" aria-hidden="true"></div>
-          </article>
-        </div>
-
-        <!-- Social proof bar -->
-        <div class="social-proof-bar">
-          <div class="sp-item">
-            <div class="sp-avatars">
-              <div class="sp-avatar" style="background:linear-gradient(135deg,#00D4FF,#6366F1)">R</div>
-              <div class="sp-avatar" style="background:linear-gradient(135deg,#10B981,#00D4FF)">M</div>
-              <div class="sp-avatar" style="background:linear-gradient(135deg,#F59E0B,#F43F5E)">A</div>
-              <div class="sp-avatar" style="background:linear-gradient(135deg,#6366F1,#8B5CF6)">P</div>
-              <div class="sp-avatar sp-more">+996</div>
-            </div>
-            <div class="sp-text">
-              <strong>1,000+ fleet managers</strong> trust NViQ every day
-            </div>
-          </div>
-          <div class="sp-divider"></div>
-          <div class="sp-rating">
-            <div class="sp-stars">
-              <svg *ngFor="let s of [1,2,3,4,5]" width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
-            </div>
-            <span class="sp-rating-val">4.9 / 5.0</span>
-            <span class="sp-rating-label">average rating</span>
           </div>
         </div>
       </div>
@@ -271,6 +304,69 @@ interface Testimonial {
       font-size: 11px;
       color: #475569;
     }
+
+    .ft-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding-top: 18px;
+      margin-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .ft-dot {
+      width: 7px; height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+    .ft-dot-active { width: 22px; background: #F59E0B; }
+
+    /* Expand control */
+    .t-actions { display: flex; justify-content: center; margin: 0 auto 18px; }
+    .t-more-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.18);
+      color: #F0F6FF;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .t-more-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(245,158,11,0.12);
+      border-color: rgba(245,158,11,0.26);
+    }
+    .t-more-icon { opacity: 0.9; }
+
+    .t-expand {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      visibility: hidden;
+      transition:
+        max-height 0.9s cubic-bezier(0.16,1,0.3,1),
+        opacity 0.35s ease,
+        transform 0.35s ease;
+    }
+    .t-expand.expanded {
+      max-height: 4800px;
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+      visibility: visible;
+    }
+    .t-expand-inner { padding-top: 6px; }
 
     /* Cards grid */
     .testimonials-grid {
@@ -474,8 +570,33 @@ interface Testimonial {
     }
   `]
 })
-export class TestimonialsSectionComponent {
+export class TestimonialsSectionComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('expandAnchor') expandAnchor?: ElementRef<HTMLElement>;
+
+  expanded = false;
+
+  featuredIndex = 0;
+  private featuredPaused = false;
+  private featuredTimer: any;
+  private readonly featuredCount = 2;
+
+  private static nextId = 0;
+  readonly expandedDomId = `testimonials-expanded-${TestimonialsSectionComponent.nextId++}`;
+
   testimonials: Testimonial[] = [
+    {
+      name: 'Vikram Sinha',
+      role: 'Director of Operations',
+      company: 'LogiStar India',
+      avatar: '',
+      initials: 'VS',
+      avatarColor: 'linear-gradient(135deg, #00D4FF, #6366F1)',
+      quote: 'NViQ completely changed how we manage our 80-vehicle fleet. The live map reduced driver disputes by 90%, and we cut our fuel costs by ₹3.2 lakh in the very first quarter. I only wish we’d switched sooner.',
+      metric: '₹3.2L',
+      metricLabel: 'saved in Q1',
+      metricColor: '#10B981',
+      stars: 5,
+    },
     {
       name: 'Rohit Sharma',
       role: 'Fleet Manager',
@@ -516,4 +637,45 @@ export class TestimonialsSectionComponent {
       stars: 5
     }
   ];
+
+  get featuredTestimonials(): Testimonial[] {
+    return this.testimonials.slice(0, this.featuredCount);
+  }
+
+  get moreTestimonials(): Testimonial[] {
+    return this.testimonials.slice(this.featuredCount);
+  }
+
+  get featured(): Testimonial {
+    return this.featuredTestimonials[this.featuredIndex] ?? this.testimonials[0];
+  }
+
+  pauseFeaturedCarousel(): void  { this.featuredPaused = true; }
+  resumeFeaturedCarousel(): void { this.featuredPaused = false; }
+
+  toggleExpanded(): void {
+    this.expanded = !this.expanded;
+    if (this.expanded) {
+      setTimeout(() => {
+        this.expandAnchor?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+  }
+
+  private startFeaturedCarousel(): void {
+    this.featuredTimer = setInterval(() => {
+      const total = this.featuredTestimonials.length;
+      if (!this.featuredPaused && total > 1) {
+        this.featuredIndex = (this.featuredIndex + 1) % total;
+      }
+    }, 2000);
+  }
+
+  ngAfterViewInit(): void {
+    this.startFeaturedCarousel();
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.featuredTimer);
+  }
 }

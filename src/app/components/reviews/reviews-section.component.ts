@@ -3,9 +3,10 @@ import {
   Component,
   ElementRef,
   Input,
+  OnChanges,
   OnDestroy,
-  QueryList,
-  ViewChildren,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -54,13 +55,17 @@ interface UserReview {
         <p class="rev-sub">{{ productType === 'mf' ? 'Trusted by investors across India for transparent, zero-commission mutual fund guidance.' : "Trusted by fleet teams across India's logistics and transport sector." }}</p>
       </div>
 
-      <!-- Cards grid -->
-      <div class="rev-grid">
+      <!-- Featured reviews (auto-sliding) -->
+      <div class="rev-featured"
+        (mouseenter)="pauseFeaturedCarousel()"
+        (mouseleave)="resumeFeaturedCarousel()">
+        <div class="rev-featured-viewport">
+          <div class="rev-featured-track"
+            [style.transform]="'translateX(-' + (featuredIndex * 100) + '%)'">
         <article
-          #cardRef
-          *ngFor="let item of testimonials; let i = index"
+          *ngFor="let item of featuredTestimonials; let i = index"
           class="rev-card"
-          [class.visible]="visibleCards[i]"
+          [class.visible]="entered"
           [style.transition-delay]="(i * 100) + 'ms'"
         >
           <!-- Big quote mark -->
@@ -100,6 +105,20 @@ interface UserReview {
           <!-- Card shimmer on hover -->
           <div class="card-shimmer" aria-hidden="true"></div>
         </article>
+          </div>
+        </div>
+
+        <!-- Dots -->
+        <div class="rev-featured-dots" *ngIf="featuredTestimonials.length > 1">
+          <button
+            *ngFor="let item of featuredTestimonials; let i = index"
+            type="button"
+            class="rev-dot"
+            [class.active]="i === featuredIndex"
+            (click)="featuredIndex = i"
+            [attr.aria-label]="'Featured review ' + (i + 1)">
+          </button>
+        </div>
       </div>
 
       <!-- Trust bar -->
@@ -112,6 +131,74 @@ interface UserReview {
           {{ t }}
         </div>
       </div>
+
+      <!-- Actions -->
+      <div class="rev-actions">
+        <button type="button" class="rev-more-btn"
+          (click)="toggleExpanded()"
+          [attr.aria-expanded]="expanded"
+          [attr.aria-controls]="expandedDomId">
+          <span class="rev-more-text">
+            {{ expanded ? 'Hide Reviews' : (productType === 'mf' ? 'See All Comments' : 'View More Reviews') }}
+          </span>
+          <svg class="rev-more-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            [style.transform]="expanded ? 'rotate(180deg)' : 'none'">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Expanded content -->
+      <div [attr.id]="expandedDomId" #expandAnchor class="rev-expand" [class.expanded]="expanded">
+        <div class="rev-expand-inner">
+
+          <!-- Remaining testimonials -->
+          <div class="rev-grid" *ngIf="moreTestimonials.length > 0">
+            <article
+              *ngFor="let item of moreTestimonials; let i = index"
+              class="rev-card"
+              [class.visible]="expanded"
+              [style.transition-delay]="(i * 100) + 'ms'"
+            >
+              <!-- Big quote mark -->
+              <div class="quote-mark" aria-hidden="true">"</div>
+
+              <!-- Stars -->
+              <div class="stars" aria-label="5 out of 5 stars">
+                <svg *ngFor="let s of [1,2,3,4,5]" width="14" height="14" viewBox="0 0 24 24" fill="#FBBF24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+
+              <!-- Quote -->
+              <p class="rev-quote">"{{ item.quote }}"</p>
+
+              <!-- Metric pill -->
+              <div *ngIf="item.metric" class="metric-pill">
+                <span class="metric-num">{{ item.metric }}</span>
+                <span class="metric-label">{{ item.metricLabel }}</span>
+              </div>
+
+              <!-- Divider -->
+              <div class="card-divider"></div>
+
+              <!-- Author -->
+              <div class="rev-author">
+                <div class="avatar"
+                  [style.background]="'linear-gradient(135deg,' + item.avatarGrad[0] + ',' + item.avatarGrad[1] + ')'">
+                  {{ item.initials }}
+                </div>
+                <div class="author-info">
+                  <strong>{{ item.name }}</strong>
+                  <span>{{ item.role }} &middot; {{ item.company }}</span>
+                </div>
+              </div>
+
+              <!-- Card shimmer on hover -->
+              <div class="card-shimmer" aria-hidden="true"></div>
+            </article>
+          </div>
 
       <!-- ── User Review Section ───────────────────────── -->
       <div class="ur-section">
@@ -247,7 +334,41 @@ interface UserReview {
               </div>
             </div>
 
+            <!-- All comments list (expanded) -->
+            <div class="ur-all" *ngIf="userReviews.length > 0">
+              <div class="ur-all-header">
+                <span class="ur-all-title">All Comments</span>
+                <span class="ur-all-count">({{ userReviews.length }})</span>
+              </div>
+
+              <div class="ur-all-grid">
+                <div *ngFor="let r of userReviews; let i = index"
+                  class="ur-review-card ur-review-card-static"
+                  [style.animation-delay]="(i * 60) + 'ms'">
+                  <div class="ur-review-top">
+                    <div class="ur-review-avatar">{{ getInitials(r.name) }}</div>
+                    <div class="ur-review-meta">
+                      <strong>{{ r.name }}</strong>
+                      <span>{{ r.date }}</span>
+                    </div>
+                  </div>
+                  <div class="ur-review-stars">
+                    <svg *ngFor="let s of [1,2,3,4,5]" width="13" height="13" viewBox="0 0 24 24"
+                      [attr.fill]="s <= r.rating ? '#FBBF24' : 'none'"
+                      [attr.stroke]="s <= r.rating ? '#FBBF24' : '#334155'"
+                      stroke-width="1.5">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                  </div>
+                  <p class="ur-review-text">"{{ r.comment }}"</p>
+                </div>
+              </div>
+            </div>
+
           </div>
+        </div>
+      </div>
+
         </div>
       </div>
 
@@ -313,6 +434,95 @@ interface UserReview {
     .rev-sub {
       color: var(--text-secondary); font-size: 0.98rem; margin: 0; line-height: 1.6;
     }
+
+    /* Featured carousel */
+    .rev-featured {
+      position: relative; z-index: 2;
+      max-width: 760px;
+      margin: 0 auto 28px;
+    }
+    .rev-featured-viewport {
+      overflow: hidden;
+      border-radius: 22px;
+    }
+    .rev-featured-track {
+      display: flex;
+      will-change: transform;
+      transition: transform 0.65s cubic-bezier(0.22,1,0.36,1);
+    }
+    .rev-featured-track .rev-card {
+      flex: 0 0 100%;
+      margin: 0;
+    }
+    .rev-featured-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding-top: 14px;
+    }
+    .rev-dot {
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      background: rgba(255,255,255,0.22);
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+    .rev-dot.active {
+      width: 26px;
+      background: #6366F1;
+    }
+
+    /* Expand control */
+    .rev-actions {
+      position: relative; z-index: 2;
+      display: flex;
+      justify-content: center;
+      margin: 8px auto 0;
+    }
+    .rev-more-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.10);
+      border: 1px solid rgba(99,102,241,0.22);
+      color: rgba(226,232,240,0.92);
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .rev-more-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(0,212,255,0.10);
+      border-color: rgba(0,212,255,0.22);
+    }
+    .rev-more-icon { opacity: 0.9; }
+
+    .rev-expand {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      visibility: hidden;
+      transition:
+        max-height 0.9s cubic-bezier(0.16,1,0.3,1),
+        opacity 0.35s ease,
+        transform 0.35s ease;
+    }
+    .rev-expand.expanded {
+      max-height: 5200px;
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+      visibility: visible;
+    }
+    .rev-expand-inner { padding-top: 26px; }
+    .rev-expand .rev-grid { margin-bottom: 34px; }
 
     /* ─── Grid ──────────────────────────────────────────── */
     .rev-grid {
@@ -648,21 +858,66 @@ interface UserReview {
     }
     .ur-c-dot-active { width: 22px; background: #6366F1; }
 
+    /* Expanded list */
+    .ur-all {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .ur-all-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .ur-all-title {
+      color: rgba(226,232,240,0.92);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .ur-all-count { color: var(--text-muted); font-size: 12px; }
+    .ur-all-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .ur-review-card.ur-review-card-static { min-width: 0; }
+
     /* ─── Responsive ─────────────────────────────────────── */
     @media (max-width: 768px) {
       .ur-layout { grid-template-columns: 1fr; }
+      .ur-all-grid { grid-template-columns: 1fr; }
     }
   `],
 })
-export class ReviewsSectionComponent implements AfterViewInit, OnDestroy {
+export class ReviewsSectionComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() productType: 'gps' | 'mf' = 'gps';
-  @ViewChildren('cardRef') cardRefs!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChild('expandAnchor') expandAnchor?: ElementRef<HTMLElement>;
 
-  visibleCards: boolean[] = [true, true, true];
-  private obs: IntersectionObserver | null = null;
+  expanded = false;
+  entered  = false;
+
+  featuredIndex = 0;
+  private featuredTimer: any;
+  private featuredPaused = false;
+
+  private static nextId = 0;
+  readonly expandedDomId = `rev-expanded-${ReviewsSectionComponent.nextId++}`;
+
+  private readonly featuredCount = 2;
 
   get testimonials(): Testimonial[] {
     return this.productType === 'mf' ? this.mfTestimonials : this.gpsTestimonials;
+  }
+
+  get featuredTestimonials(): Testimonial[] {
+    return this.testimonials.slice(0, this.featuredCount);
+  }
+
+  get moreTestimonials(): Testimonial[] {
+    return this.testimonials.slice(this.featuredCount);
   }
 
   get trustItems(): string[] {
@@ -793,6 +1048,18 @@ export class ReviewsSectionComponent implements AfterViewInit, OnDestroy {
   pauseCarousel(): void  { this.carouselPaused = true; }
   resumeCarousel(): void { this.carouselPaused = false; }
 
+  pauseFeaturedCarousel(): void  { this.featuredPaused = true; }
+  resumeFeaturedCarousel(): void { this.featuredPaused = false; }
+
+  toggleExpanded(): void {
+    this.expanded = !this.expanded;
+    if (this.expanded) {
+      setTimeout(() => {
+        this.expandAnchor?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+  }
+
   private startCarousel(): void {
     this.carouselTimer = setInterval(() => {
       if (!this.carouselPaused && this.userReviews.length > 1) {
@@ -801,27 +1068,29 @@ export class ReviewsSectionComponent implements AfterViewInit, OnDestroy {
     }, 2000);
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => { this.visibleCards = this.visibleCards.map(() => true); }, 80);
-    this.startCarousel();
+  private startFeaturedCarousel(): void {
+    this.featuredTimer = setInterval(() => {
+      const total = this.featuredTestimonials.length;
+      if (!this.featuredPaused && total > 1) {
+        this.featuredIndex = (this.featuredIndex + 1) % total;
+      }
+    }, 2000);
+  }
 
-    this.obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          const idx = parseInt(e.target.getAttribute('data-idx') || '0', 10);
-          if (e.isIntersecting) this.visibleCards[idx] = true;
-        });
-      },
-      { threshold: 0.15 }
-    );
-    this.cardRefs.forEach((ref, i) => {
-      ref.nativeElement.setAttribute('data-idx', String(i));
-      this.obs!.observe(ref.nativeElement);
-    });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['productType']) {
+      this.featuredIndex = 0;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => { this.entered = true; }, 80);
+    this.startCarousel();
+    this.startFeaturedCarousel();
   }
 
   ngOnDestroy(): void {
-    this.obs?.disconnect();
     clearInterval(this.carouselTimer);
+    clearInterval(this.featuredTimer);
   }
 }

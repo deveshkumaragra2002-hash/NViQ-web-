@@ -10,7 +10,21 @@
       "Read(//c/Program Files/MongoDB/**)",
       "PowerShell(Get-Command mongod -ErrorAction SilentlyContinue)",
       "Bash(npm run *)",
-      "PowerShell(Stop-Process -Id \\(Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue\\).OwningProcess -Force -ErrorAction SilentlyContinue; Write-Host \"Port 5000 freed\")"
+      "PowerShell(Stop-Process -Id \\(Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue\\).OwningProcess -Force -ErrorAction SilentlyContinue; Write-Host \"Port 5000 freed\")",
+      "Bash(git add *)",
+      "Bash(git commit -m 'feat: add reviews section to mutual fund page *)",
+      "Bash(git push *)",
+      "Bash(git commit -m 'feat: commit all components, directives, images and updates for full Vercel deployment *)",
+      "Bash(git commit --allow-empty -m 'chore: trigger backend redeploy with contact validator fix *)",
+      "Bash(git commit -m 'fix: add vercel.json to backend for proper Node.js deployment *)",
+      "Bash(git commit -m 'fix: update backend vercel.json routing and add build script *)",
+      "Bash(git rm *)",
+      "Bash(git commit -m 'fix: remove backend vercel.json, use Vercel auto-detection for Node.js *)",
+      "Bash(git commit -m 'fix: restore backend vercel.json with routes config *)",
+      "Bash(git commit -m 'fix: add product enquiry source values to Contact mongoose model enum *)",
+      "Bash(git commit *)",
+      "Bash(dir \"e:\\\\nviq_redesigned\\\\nviq_final\\\\nviq-angular\\\\public\")",
+      "Bash(dir \"e:\\\\nviq_redesigned\\\\nviq_final\\\\nviq-angular\\\\public\" /b /s)"
     ]
   }
 }

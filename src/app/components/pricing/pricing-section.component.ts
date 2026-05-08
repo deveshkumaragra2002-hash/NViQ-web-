@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 
@@ -83,7 +83,7 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
               </li>
             </ul>
 
-            <button class="plan-cta" [class.primary]="plan.popular">
+            <button type="button" class="plan-cta" [class.primary]="plan.popular" (click)="openModal.emit()">
               <span class="btn-text">{{ plan.price === 0 ? 'Contact Sales' : 'Choose Plan' }}</span>
               <span class="btn-arrow">→</span>
             </button>
@@ -443,6 +443,7 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
   `]
 })
 export class PricingSectionComponent implements OnInit {
+  @Output() openModal = new EventEmitter<void>();
   isAnnual = false;
 
   ngOnInit(): void {}

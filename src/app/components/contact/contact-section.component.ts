@@ -508,7 +508,7 @@ export class ContactSectionComponent implements OnInit {
         icon: this.iconMail,
         color: '#60B4FF',
         label: 'Email',
-        values: ['nviqbharat@gmail.com'],
+        values: ['naviqbharat@gmail.com'],
       },
       {
         icon: this.iconPin,

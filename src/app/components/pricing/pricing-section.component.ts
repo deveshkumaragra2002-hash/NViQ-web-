@@ -36,7 +36,7 @@ import { NavService } from '../../services/nav.service';
             </div>
             <div class="ps-price-wrap">
               <span class="ps-currency">₹</span>
-              <span class="ps-amount">499</span>
+              <span class="ps-amount">1599</span>
             </div>
             <div class="ps-divider"></div>
             <ul class="ps-features">

@@ -41,8 +41,6 @@ import { NavService } from '../../services/nav.service';
           <span class="f-dot" aria-hidden="true"></span>
           <a class="f-link" (click)="goContact()">Contact Us</a>
           <span class="f-dot" aria-hidden="true"></span>
-          <a class="f-link" routerLink="/mutual-fund">Investor Relations</a>
-          <span class="f-dot" aria-hidden="true"></span>
           <a class="f-link" (click)="goTeam()">Our Team</a>
         </nav>
 

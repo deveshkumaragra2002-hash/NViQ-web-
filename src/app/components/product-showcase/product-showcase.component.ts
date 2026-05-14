@@ -52,7 +52,7 @@ export class ProductShowcaseComponent implements AfterViewInit, OnDestroy {
       title: 'GPS Tracking System',
       subtitle: 'Real-time fleet visibility & smart alerts',
       features: ['Live vehicle tracking', 'Geo-fencing & alerts', 'Route analytics'],
-      accent: '#2563EB',
+      accent: '#00D4FF',
       gradient: '',
       visual: 'gps',
       floats: [
@@ -71,7 +71,7 @@ export class ProductShowcaseComponent implements AfterViewInit, OnDestroy {
         'AI-powered recommendations',
         'Real-time tracking & insights',
       ],
-      accent: '#2563EB',
+      accent: '#22c55e',
       gradient: '',
       visual: 'mf',
       floats: [
@@ -86,7 +86,7 @@ export class ProductShowcaseComponent implements AfterViewInit, OnDestroy {
       title: 'FASTag (Fast Track System)',
       subtitle: 'Seamless toll payments for your fleet',
       features: ['Instant recharge', 'Low balance alerts', 'Nationwide coverage'],
-      accent: '#2563EB',
+      accent: '#3B82F6',
       gradient: '',
       visual: 'fastag',
       floats: [
@@ -101,7 +101,7 @@ export class ProductShowcaseComponent implements AfterViewInit, OnDestroy {
       title: 'Agriculture Drone',
       subtitle: 'Smart farming from the sky',
       features: ['Automated spraying', 'Live field monitoring', 'Long battery life'],
-      accent: '#2563EB',
+      accent: '#a855f7',
       gradient: '',
       visual: 'drone',
       floats: [

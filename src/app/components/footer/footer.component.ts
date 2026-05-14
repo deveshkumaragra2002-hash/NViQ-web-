@@ -76,11 +76,6 @@ import { NavService } from '../../services/nav.service';
         <!-- Bottom bar -->
         <div class="f-bottom">
           <span class="f-copy">© 2026 NViQ Technologies Pvt. Ltd. · Built in India 🇮🇳</span>
-          <div class="f-legal">
-            <a href="#" class="f-legal-link">Privacy Policy</a>
-            <a href="#" class="f-legal-link">Terms of Use</a>
-            <a href="#" class="f-legal-link">Security</a>
-          </div>
         </div>
 
       </div>

@@ -24,7 +24,7 @@ import { CommonModule } from '@angular/common';
 
         <!-- Brand name -->
         <div class="rl-brand">
-          NV<span class="rl-brand-accent">i</span>Q
+          <span class="rl-bn">N</span><span class="rl-bvi">vi</span><span class="rl-bq">Q</span>
         </div>
 
         <!-- Tagline -->
@@ -155,15 +155,24 @@ import { CommonModule } from '@angular/common';
 
     /* Brand name */
     .rl-brand {
-      font-family: 'Outfit', sans-serif;
-      font-size: 2.2rem; font-weight: 900;
-      letter-spacing: -0.04em; color: #F0F6FF;
+      font-family: 'Courier New', monospace;
+      font-size: 2.6rem; font-weight: 900;
+      letter-spacing: -3px;
+      display: inline-flex; align-items: baseline;
       margin-bottom: 6px;
     }
-    .rl-brand-accent {
-      background: linear-gradient(120deg, #3B82F6, #6366F1);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .rl-bn {
+      color: #fff; font-weight: 900;
+      text-shadow: 0 0 24px rgba(255,255,255,0.3);
+    }
+    .rl-bvi {
+      color: rgba(255,255,255,0.4);
+      font-weight: 700;
+      letter-spacing: -2px;
+    }
+    .rl-bq {
+      color: #3B82F6; font-weight: 900;
+      text-shadow: 0 0 24px rgba(59,130,246,0.6);
     }
 
     /* Tagline */

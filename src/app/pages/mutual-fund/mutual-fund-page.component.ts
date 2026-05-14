@@ -59,14 +59,6 @@ import { AmcPartnersComponent } from '../../components/amc-partners/amc-partners
         </div>
       </div>
 
-      <!-- Arrows -->
-      <button class="mf-arrow mf-arrow-prev" (click)="prevSlide()" aria-label="Previous">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <button class="mf-arrow mf-arrow-next" (click)="nextSlide()" aria-label="Next">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-      </button>
-
       <!-- Dots -->
       <div class="mf-dots">
         <button *ngFor="let s of mfSlides; let i = index"
@@ -263,19 +255,6 @@ import { AmcPartnersComponent } from '../../components/amc-partners/amc-partners
     .mf-slide-btn:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(59,130,246,0.45); }
 
     /* Arrows */
-    .mf-arrow {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      z-index: 10; width: 50px; height: 50px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.35); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; backdrop-filter: blur(10px);
-      transition: all 0.25s ease;
-    }
-    .mf-arrow:hover { background: rgba(59,130,246,0.25); border-color: rgba(59,130,246,0.5); }
-    .mf-arrow-prev { left: 20px; }
-    .mf-arrow-next { right: 20px; }
-
     /* Dots */
     .mf-dots {
       position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
@@ -300,9 +279,6 @@ import { AmcPartnersComponent } from '../../components/amc-partners/amc-partners
       .mf-slide { padding: 0 20px; align-items: center; padding-top: 80px; }
       .mf-slide-stats { gap: 20px; }
       .mf-stat-val { font-size: 1.3rem; }
-      .mf-arrow { width: 36px; height: 36px; }
-      .mf-arrow-prev { left: 8px; }
-      .mf-arrow-next { right: 8px; }
     }
 
     /* ── Back bar ─────────────────────────────────────── */

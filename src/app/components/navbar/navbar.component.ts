@@ -29,18 +29,9 @@ import { NavService } from '../../services/nav.service';
         <!-- CENTER: Logo (absolute centered) -->
         <button class="nav-logo" type="button" (click)="navigate('home')">
           <span class="logo-rabbit" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 80 80" fill="none"
-              stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M28 36 C26 28 24 18 26 10 C27 6 30 4 33 6 C36 8 36 14 35 22 L34 30"/>
-              <path d="M38 32 C38 24 40 16 44 12 C46 10 49 10 50 13 C51 16 49 22 46 27 L42 32"/>
-              <path d="M24 36 C22 40 22 46 26 50 C30 54 36 55 42 54 C48 53 52 49 52 44 C52 38 48 33 42 32 L35 30 C30 29 25 32 24 36Z"/>
-              <circle cx="35" cy="42" r="2" fill="white" stroke="none"/>
-              <path d="M26 50 C24 56 24 62 28 66 C32 70 40 71 46 69 C52 67 54 61 52 55"/>
-              <circle cx="54" cy="62" r="3"/>
-              <path d="M30 66 L28 74 M36 68 L36 76 M44 68 L46 76 M50 64 L54 72"/>
-            </svg>
+            <img src="favicon.jpeg" alt="NViQ Logo" class="logo-img"/>
           </span>
-          <span class="logo-text">NV<span class="logo-i">i</span>Q</span>
+          <span class="logo-text"><span class="logo-n">N</span><span class="logo-vi">vi</span><span class="logo-q">Q</span></span>
         </button>
 
         <!-- RIGHT: Contact + Our Team -->
@@ -48,7 +39,7 @@ import { NavService } from '../../services/nav.service';
           <button class="nav-link" type="button"
             [class.active]="nav.page() === 'contact'"
             (click)="navigate('contact')">
-            Contact
+            Contact Us
           </button>
           <button class="nav-link" type="button"
             [class.active]="nav.page() === 'team'"
@@ -72,7 +63,7 @@ import { NavService } from '../../services/nav.service';
       <div class="mob-panel" [class.mob-open]="mobileOpen">
         <button class="mob-link" type="button" (click)="navigate('products')">Products</button>
         <button class="mob-link" type="button" (click)="navigate('about')">About Us</button>
-        <button class="mob-link" type="button" (click)="navigate('contact')">Contact</button>
+        <button class="mob-link" type="button" (click)="navigate('contact')">Contact Us</button>
         <button class="mob-link" type="button" (click)="navigate('team')">Our Team</button>
       </div>
     </nav>
@@ -187,24 +178,38 @@ import { NavService } from '../../services/nav.service';
 
     .logo-rabbit {
       width: 36px; height: 36px;
-      background: rgba(37,99,235,0.08);
-      border: 1px solid rgba(37,99,235,0.2);
       border-radius: 10px;
+      overflow: hidden;
       display: inline-flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      transition: background 0.2s, border-color 0.2s;
     }
-    .logo-rabbit svg { stroke: #2563EB; }
+    .logo-img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      border-radius: 10px;
+    }
     .nav-logo:hover .logo-rabbit {
-      background: rgba(37,99,235,0.14);
-      border-color: rgba(37,99,235,0.35);
+      opacity: 0.85;
     }
     .logo-text {
-      font-family: 'Outfit', sans-serif;
-      font-size: 19px; font-weight: 900;
-      color: #0F172A; letter-spacing: -0.02em;
+      font-family: 'Courier New', 'JetBrains Mono', monospace;
+      font-size: 24px; font-weight: 900;
+      letter-spacing: -2px;
+      display: inline-flex; align-items: baseline;
     }
-    .logo-i { color: #2563EB; }
+    .logo-n {
+      color: #0F172A;
+      font-weight: 900;
+    }
+    .logo-vi {
+      color: #94a3b8;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+    .logo-q {
+      color: #2563EB;
+      font-weight: 900;
+    }
 
     /* ── Mobile toggle ──────────────────────────────────── */
     .mob-toggle {

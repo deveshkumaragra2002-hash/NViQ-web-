@@ -64,14 +64,6 @@ import { AmcPartnersComponent } from '../amc-partners/amc-partners.component';
           </div>
         </div>
 
-        <!-- Prev / Next arrows -->
-        <button class="gps-arrow gps-arrow-prev" (click)="prevGpsSlide()" aria-label="Previous">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <button class="gps-arrow gps-arrow-next" (click)="nextGpsSlide()" aria-label="Next">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-
         <!-- Dot nav -->
         <div class="gps-dots">
           <button
@@ -254,15 +246,11 @@ import { AmcPartnersComponent } from '../amc-partners/amc-partners.component';
   styles: [`
     /* ── Back bar ───────────────────────────────────────── */
     .pd-back-bar {
-      position: sticky; top: 72px; z-index: 50;
-      padding: 12px 32px;
-      background: rgba(10,10,10,0.9);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 20px 32px 0;
     }
     .pd-back {
       display: inline-flex; align-items: center; gap: 8px;
-      background: transparent; border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
       color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 600;
       padding: 7px 16px; border-radius: 10px; cursor: pointer;
       transition: all 0.2s ease;
@@ -715,26 +703,6 @@ import { AmcPartnersComponent } from '../amc-partners/amc-partners.component';
       display: flex; gap: 14px; flex-wrap: wrap;
     }
 
-    /* Arrows */
-    .gps-arrow {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      z-index: 10;
-      width: 50px; height: 50px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.35);
-      color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; backdrop-filter: blur(10px);
-      transition: all 0.25s ease;
-    }
-    .gps-arrow:hover {
-      background: rgba(0,212,255,0.25);
-      border-color: rgba(0,212,255,0.5);
-      box-shadow: 0 0 20px rgba(0,212,255,0.2);
-    }
-    .gps-arrow-prev { left: 20px; }
-    .gps-arrow-next { right: 20px; }
-
     /* Dots */
     .gps-dots {
       position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
@@ -764,9 +732,6 @@ import { AmcPartnersComponent } from '../amc-partners/amc-partners.component';
       .gps-slide  { padding: 0 20px; align-items: center; padding-top: 80px; }
       .gps-slide-title { font-size: clamp(1.6rem, 6vw, 2.4rem); }
       .gps-slide-desc  { font-size: 0.9rem; margin-bottom: 20px; }
-      .gps-arrow  { width: 36px; height: 36px; }
-      .gps-arrow-prev { left: 8px; }
-      .gps-arrow-next { right: 8px; }
       .gps-slide-content { max-width: 100%; }
     }
 

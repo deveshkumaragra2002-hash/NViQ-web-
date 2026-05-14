@@ -1,0 +1,24 @@
+{
+  "name": "NViQ — Smart Fleet & Business Solutions",
+  "short_name": "NViQ",
+  "description": "Real-time GPS fleet tracking and mutual fund investment platform built for India.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050507",
+  "theme_color": "#2563EB",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "favicon.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

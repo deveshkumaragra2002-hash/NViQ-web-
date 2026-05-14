@@ -18,17 +18,9 @@ import { NavService } from '../../services/nav.service';
         <!-- Logo -->
         <a class="f-logo" (click)="goHome()">
           <span class="f-logo-icon" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 80 80" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M28 36 C26 28 24 18 26 10 C27 6 30 4 33 6 C36 8 36 14 35 22 L34 30"/>
-              <path d="M38 32 C38 24 40 16 44 12 C46 10 49 10 50 13 C51 16 49 22 46 27 L42 32"/>
-              <path d="M24 36 C22 40 22 46 26 50 C30 54 36 55 42 54 C48 53 52 49 52 44 C52 38 48 33 42 32 L35 30 C30 29 25 32 24 36Z"/>
-              <circle cx="35" cy="42" r="2" fill="white" stroke="none"/>
-              <path d="M26 50 C24 56 24 62 28 66 C32 70 40 71 46 69 C52 67 54 61 52 55 C51 52 49 50 46 49"/>
-              <circle cx="54" cy="62" r="3.5"/>
-              <path d="M30 66 L28 74 M36 68 L36 76 M44 68 L46 76 M50 64 L54 72"/>
-            </svg>
+            <img src="favicon.jpeg" alt="NViQ Logo" class="f-logo-img"/>
           </span>
-          <span class="f-logo-text">NV<span class="f-logo-i">i</span>Q</span>
+          <span class="f-logo-text"><span class="f-ln">N</span><span class="f-lvi">vi</span><span class="f-lq">Q</span></span>
         </a>
 
         <!-- Nav links -->
@@ -53,14 +45,7 @@ import { NavService } from '../../services/nav.service';
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
             </svg>
           </a>
-          <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="f-social-btn" aria-label="LinkedIn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-              <rect x="2" y="9" width="4" height="12"/>
-              <circle cx="4" cy="4" r="2"/>
-            </svg>
-          </a>
-          <a href="https://www.youtube.com/@TeamNViQ" target="_blank" rel="noopener noreferrer" class="f-social-btn" aria-label="YouTube">
+<a href="https://www.youtube.com/@TeamNViQ" target="_blank" rel="noopener noreferrer" class="f-social-btn" aria-label="YouTube">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
               <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
@@ -109,20 +94,29 @@ import { NavService } from '../../services/nav.service';
     .f-logo {
       display: inline-flex; align-items: center; gap: 10px;
       text-decoration: none; cursor: pointer;
-      font-family: 'Outfit', sans-serif;
-      font-size: 22px; font-weight: 900;
-      color: #fff; letter-spacing: -0.02em;
+    }
+    .f-logo-text {
+      font-family: 'Courier New', monospace;
+      font-size: 26px; font-weight: 900;
+      letter-spacing: -2px;
+      display: inline-flex; align-items: baseline;
     }
 
     .f-logo-icon {
       width: 38px; height: 38px;
-      background: rgba(37,99,235,0.1);
-      border: 1px solid rgba(37,99,235,0.2);
       border-radius: 10px;
+      overflow: hidden;
       display: inline-flex; align-items: center; justify-content: center;
     }
+    .f-logo-img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      border-radius: 10px;
+    }
 
-    .f-logo-i { color: #3B82F6; }
+    .f-ln { color: #fff; font-weight: 900; }
+    .f-lvi { color: rgba(255,255,255,0.45); font-weight: 700; letter-spacing: -1px; }
+    .f-lq { color: #3B82F6; font-weight: 900; }
 
     /* Nav */
     .f-nav {

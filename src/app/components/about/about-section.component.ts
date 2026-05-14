@@ -22,7 +22,7 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
       <div class="ab-hero-glow"></div>
       <div class="ab-hero-content">
         <span class="ab-hero-tag">About NViQ</span>
-        <h1 class="ab-hero-title">We Are <span class="ab-hero-accent">NViQ</span></h1>
+        <h1 class="ab-hero-title">We Are <span class="ab-brand"><span class="ab-bn">N</span><span class="ab-bvi">vi</span><span class="ab-bq">Q</span></span></h1>
         <div class="ab-hero-divider"></div>
         <div class="ab-hero-chips">
           <span class="ab-chip">Founded 2026</span>
@@ -228,12 +228,15 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
       color: #F0F6FF; margin: 0 0 18px; line-height: 1.0;
       text-shadow: 0 4px 40px rgba(0,0,0,0.5);
     }
-    .ab-hero-accent {
-      background: linear-gradient(120deg, #3B82F6, #818CF8);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 24px rgba(59,130,246,0.5));
+    .ab-brand {
+      font-family: 'Courier New', monospace;
+      font-size: inherit;
+      font-weight: 900; letter-spacing: -3px;
+      display: inline-flex; align-items: baseline;
     }
+    .ab-bn { color: #ffffff; font-weight: 900; }
+    .ab-bvi { color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: -2px; }
+    .ab-bq { color: #3B82F6; font-weight: 900; text-shadow: 0 0 24px rgba(59,130,246,0.5); }
 
     .ab-hero-divider {
       width: 64px; height: 3px;

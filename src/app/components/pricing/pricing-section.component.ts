@@ -1,11 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavService } from '../../services/nav.service';
+import { RevealDirective } from '../../directives/reveal.directive';
+import { TiltDirective } from '../../directives/tilt.directive';
 
 @Component({
   selector: 'app-pricing-section',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RevealDirective, TiltDirective],
   template: `
     <section class="ps-root">
       <!-- Background grid -->
@@ -16,7 +18,7 @@ import { NavService } from '../../services/nav.service';
       <div class="ps-container">
 
         <!-- Header -->
-        <div class="ps-header">
+        <div class="ps-header" appReveal="up">
           <span class="ps-eyebrow">
             <span class="ps-eyebrow-dot"></span>
             GPS Pricing
@@ -41,7 +43,7 @@ import { NavService } from '../../services/nav.service';
         <div class="ps-grid-cards">
 
           <!-- Starter -->
-          <div class="ps-card">
+          <div class="ps-card" appReveal="up" [revealDelay]="0" appTilt [tiltMax]="8" tiltGlow="rgba(0,212,255,0.2)">
             <div class="ps-card-top">
               <div class="ps-tag">Starter</div>
               <p class="ps-desc">Basic tracking for small fleets.</p>
@@ -68,7 +70,7 @@ import { NavService } from '../../services/nav.service';
           </div>
 
           <!-- Professional -->
-          <div class="ps-card ps-card-popular">
+          <div class="ps-card ps-card-popular" appReveal="up" [revealDelay]="120" appTilt [tiltMax]="10" tiltGlow="rgba(59,130,246,0.3)">
             <div class="ps-popular-badge">
               <span class="ps-badge-shine"></span>
               ★ Recommended
@@ -99,7 +101,7 @@ import { NavService } from '../../services/nav.service';
           </div>
 
           <!-- Enterprise -->
-          <div class="ps-card">
+          <div class="ps-card" appReveal="up" [revealDelay]="240" appTilt [tiltMax]="8" tiltGlow="rgba(99,102,241,0.2)">
             <div class="ps-card-top">
               <div class="ps-tag">Enterprise</div>
               <p class="ps-desc">Full integration for large operations.</p>

@@ -4,6 +4,8 @@
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavService, ProductKey } from '../../services/nav.service';
+import { RevealDirective } from '../../directives/reveal.directive';
+import { TiltDirective } from '../../directives/tilt.directive';
 
 type ProductId = ProductKey;
 
@@ -33,7 +35,7 @@ interface Pt3D {
 @Component({
   selector: 'app-product-showcase',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RevealDirective, TiltDirective],
   templateUrl: './product-showcase.component.html',
   styleUrls: ['./product-showcase.component.css'],
 })

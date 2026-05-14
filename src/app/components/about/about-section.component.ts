@@ -8,12 +8,13 @@ import { ApiService, LiveGpsStats } from '../../services/api.service';
 import { environment } from '../../../environments/environment';
 import { TiltDirective }         from '../../directives/tilt.directive';
 import { RevealDirective }       from '../../directives/reveal.directive';
+import { CountupDirective }      from '../../directives/countup.directive';
 import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.component';
 
 @Component({
   selector: 'app-about-section',
   standalone: true,
-  imports: [CommonModule, TiltDirective, RevealDirective, ParticleCanvasComponent],
+  imports: [CommonModule, TiltDirective, RevealDirective, CountupDirective, ParticleCanvasComponent],
   template: `
     <!-- ══ ABOUT HERO ════════════════════════════════════ -->
     <section class="ab-hero" aria-label="About NViQ">
@@ -73,7 +74,12 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
           <div class="ab-mission-stats glass-dark" appTilt [tiltMax]="8" [tiltGlow]="'rgba(59,130,246,0.2)'"
             appReveal="right" [revealDelay]="160">
             <div class="ab-stat" *ngFor="let s of stats">
-              <strong [style.color]="s.color">{{ s.val }}</strong>
+              <strong [style.color]="s.color"
+                *ngIf="s.num > 0"
+                [appCountup]="s.num"
+                [countupSuffix]="s.suffix"
+                [countupPrefix]="s.prefix">{{ s.val }}</strong>
+              <strong [style.color]="s.color" *ngIf="s.num === 0">{{ s.val }}</strong>
               <span>{{ s.label }}</span>
             </div>
           </div>
@@ -570,10 +576,10 @@ export class AboutSectionComponent implements OnInit, OnDestroy {
   private readonly socketUrl = environment.apiUrl.replace(/\/api$/, '');
 
   stats = [
-    { val: '10+',    label: 'Years GPS Experience', color: '#00D4FF' },
-    { val: '2026',   label: 'Founded in India',     color: '#60A5FA' },
-    { val: '99.9%',  label: 'Platform Uptime',      color: '#a78bfa' },
-    { val: 'AMFI',   label: 'ARN No: 359231',        color: '#22c55e' },
+    { val: '10+',    label: 'Years GPS Experience', color: '#00D4FF', num: 10,   suffix: '+',  prefix: '' },
+    { val: '500+',   label: 'Vehicles Tracked',     color: '#60A5FA', num: 500,  suffix: '+',  prefix: '' },
+    { val: '99.9%',  label: 'Platform Uptime',      color: '#a78bfa', num: 99,   suffix: '%',  prefix: '' },
+    { val: 'AMFI',   label: 'ARN No: 359231',        color: '#22c55e', num: 0,    suffix: '',   prefix: '' },
   ];
 
   gpsValues = [

@@ -4,7 +4,7 @@
   <canvas #ptCanvas class="ps-canvas"></canvas>
 
   <div class="ps-container">
-    <div class="ps-header">
+    <div class="ps-header" appReveal="up">
       <h2 class="ps-title">Our Products</h2>
       <p class="ps-subtitle">Innovative solutions for every need</p>
     </div>
@@ -15,6 +15,8 @@
         class="ps-card"
         (click)="openProduct(p.id)"
         [style.animationDelay]="(i * 90) + 'ms'"
+        appReveal="up" [revealDelay]="i * 120"
+        appTilt [tiltMax]="6" [tiltGlow]="p.accent + '22'"
       >
         <div class="ps-card-bg" aria-hidden="true"></div>
 

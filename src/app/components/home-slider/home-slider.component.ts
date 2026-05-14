@@ -501,7 +501,7 @@ interface Particle {
       <!-- Progress bar -->
       <div class="progress-bar">
         <div class="progress-fill"
-          [style.transition-duration]="'5000ms'"
+          [style.transition-duration]="'2000ms'"
           [class.running]="running">
         </div>
       </div>
@@ -789,7 +789,7 @@ interface Particle {
     .progress-fill {
       height: 100%; width: 0%;
       background: linear-gradient(90deg, #2563EB, #3B82F6);
-      transition: width 5000ms linear;
+      transition: width 2000ms linear;
     }
     .progress-fill.running { width: 100%; }
 
@@ -1494,7 +1494,7 @@ export class HomeSliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ngZone.runOutsideAngular(() => {
       this.intervalId = setInterval(() => {
         if (!this.paused) this.ngZone.run(() => this.next());
-      }, 5000);
+      }, 2000);
     });
   }
 

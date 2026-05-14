@@ -39,13 +39,12 @@ import { NavService } from '../../services/nav.service';
             <div class="f-col">
               <h4>{{ isMF ? 'Invest' : 'Product' }}</h4>
               <ng-container *ngIf="!isMF">
-                <a routerLink="/services">Mutual Fund Solutions</a>
-                <a routerLink="/services">GPS Tracking</a>
-                <a routerLink="/services">AI Fleet Profitability Tools</a>
-                <a routerLink="/services">FASTag Services</a>
-                <a routerLink="/services">Vehicle Insurance</a>
-                <a routerLink="/services">AIS 140 Devices</a>
-                <a routerLink="/services">Drone Solutions</a>
+                <a href="javascript:void(0)" (click)="goProduct('mf')">Mutual Fund Solutions</a>
+                <a href="javascript:void(0)" (click)="goProduct('gps')">GPS Tracking</a>
+                <a href="javascript:void(0)" (click)="goProduct('ai')">AI Fleet Profitability Tools</a>
+                <a href="javascript:void(0)" (click)="goProduct('fastag')">FASTag Services</a>
+                <a href="javascript:void(0)" (click)="goProduct('gps')">AIS 140 Devices</a>
+                <a href="javascript:void(0)" (click)="goProduct('drone')">Drone Solutions</a>
               </ng-container>
               <ng-container *ngIf="isMF">
                 <a routerLink="/mutual-fund">SIP Investment</a>
@@ -316,6 +315,20 @@ export class FooterComponent {
       this.router.navigate(['/']).then(() => this.nav.go('about'));
     } else {
       this.nav.go('about');
+    }
+  }
+
+  goProduct(productId: string): void {
+    const key = productId as any;
+    this.nav.product.set(key);
+    const go = () => {
+      this.nav.product.set(key);
+      this.nav.go('product-detail', key);
+    };
+    if (this.router.url !== '/') {
+      this.router.navigate(['/']).then(() => go());
+    } else {
+      go();
     }
   }
 

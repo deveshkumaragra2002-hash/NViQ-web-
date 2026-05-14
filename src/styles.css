@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Hide all native cursors — rabbit follower handles it ── */
+*, *::before, *::after,
+html, body, a, button, input, select, textarea, label,
+[role="button"], [tabindex], [href] {
+  cursor: none !important;
+}
+
 /* ============================================================
    DESIGN TOKENS — NViQ Blue + White SaaS Theme
    ============================================================ */

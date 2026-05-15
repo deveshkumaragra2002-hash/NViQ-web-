@@ -512,7 +512,8 @@ interface Particle {
     /* ── Root ──────────────────────────────────────────── */
     .slider-root {
       position: relative; width: 100%;
-      height: 100vh; overflow: hidden;
+      height: 100vh;
+      overflow: hidden;
       background: #0A0A0A;
     }
 
@@ -524,17 +525,27 @@ interface Particle {
     }
 
     /* ── Slides ─────────────────────────────────────────── */
-    .slides-wrap { position: absolute; inset: 0; }
+    .slides-wrap {
+      position: absolute; inset: 0;
+      overflow: hidden;
+    }
 
     .slide {
       position: absolute; inset: 0;
+      overflow: hidden;
       opacity: 0; transition: opacity 1.2s ease;
       pointer-events: none;
     }
     .slide.active { opacity: 1; pointer-events: auto; }
 
-    .slide-bg-img-wrap { position: absolute; inset: -8%; z-index: 0; transform-style: preserve-3d; }
-    .slide-bg-img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); transition: transform 0.18s ease-out; }
+    .slide-bg-img-wrap {
+      position: absolute; inset: 0; z-index: 0;
+      overflow: hidden;
+    }
+    .slide-bg-img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+    }
     .slide-bg  { position: absolute; inset: 0; z-index: 1; }
 
     .slide-grid {
@@ -565,12 +576,13 @@ interface Particle {
 
     /* ── Content — sits above particle canvas ───────────── */
     .slide-content {
-      position: relative; z-index: 20;
-      height: 100%;
+      position: absolute; inset: 0; z-index: 20;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center;
-      padding: 100px 24px 80px;
+      padding: 80px 5% 72px;
+      box-sizing: border-box;
+      overflow: hidden;
       opacity: 0; transition: opacity 0.5s ease 0.4s;
     }
     .slide-content.visible { opacity: 1; }
@@ -583,7 +595,8 @@ interface Particle {
       backdrop-filter: blur(8px);
       font-size: 11px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.12em;
-      margin-bottom: 32px;
+      margin-bottom: clamp(16px,2.5vh,28px);
+      flex-shrink: 0;
     }
     .tag-dot {
       width: 6px; height: 6px; border-radius: 50%;
@@ -593,10 +606,11 @@ interface Particle {
 
     /* Icon */
     .slide-icon-ring {
-      width: 80px; height: 80px;
-      border-radius: 22px; border: 1px solid;
+      width: 70px; height: 70px;
+      border-radius: 20px; border: 1px solid;
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 28px;
+      margin-bottom: clamp(14px,2vh,24px);
+      flex-shrink: 0;
       animation: iconPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.6s both;
     }
     @keyframes iconPop {
@@ -605,12 +619,12 @@ interface Particle {
     }
 
     /* Heading */
-    .slide-heading { margin-bottom: 16px; }
+    .slide-heading { margin-bottom: clamp(10px,1.5vh,16px); }
     .slide-h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: clamp(3rem, 8vw, 7.5rem);
+      font-size: clamp(2.4rem, 5.5vw, 5.5rem);
       font-weight: 900; letter-spacing: -0.04em;
-      line-height: 0.95; display: block; color: #fff;
+      line-height: 1.0; display: block; color: #fff;
     }
     .gradient-heading {
       background: linear-gradient(120deg, #2563EB 0%, #3B82F6 40%, #93C5FD 100%);
@@ -622,9 +636,9 @@ interface Particle {
     /* Sub */
     .slide-sub {
       color: rgba(255,255,255,0.6);
-      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-      line-height: 1.7; max-width: 560px;
-      margin: 0 auto 40px;
+      font-size: clamp(0.9rem, 1.3vw, 1.08rem);
+      line-height: 1.65; max-width: 520px;
+      margin: 0 auto clamp(20px,3.5vh,36px);
     }
 
     /* CTA */
@@ -657,20 +671,21 @@ interface Particle {
       text-align: left;
       align-items: center;
       justify-content: center;
-      padding: 100px 6% 80px;
-      gap: 48px;
+      padding: 80px 5% 72px;
+      gap: clamp(24px,4vw,48px);
     }
     .mf-left-col {
       flex: 1;
       display: flex; flex-direction: column;
       align-items: flex-start;
-      max-width: 560px;
+      max-width: 520px; min-width: 0;
     }
-    .mf-left-col .slide-sub { margin: 0 0 40px; }
-    .mf-left-col .slide-tag { margin-bottom: 28px; }
+    .mf-left-col .slide-sub { margin: 0 0 clamp(20px,3vh,36px); }
+    .mf-left-col .slide-tag { margin-bottom: clamp(14px,2vh,24px); }
     .mf-right-col {
-      flex: 0 0 340px;
+      flex: 0 0 clamp(280px,28vw,340px);
       pointer-events: auto;
+      min-width: 0;
     }
     .slide-inner-col {
       display: contents;
@@ -759,10 +774,10 @@ interface Particle {
     }
 
     @media (max-width: 1024px) {
-      .slide-content.mf-split { flex-direction: column; text-align: center; padding: 100px 24px 80px; }
+      .slide-content.mf-split { flex-direction: column; text-align: center; padding: clamp(72px,10vh,96px) 24px clamp(56px,7vh,72px); gap: 24px; }
       .mf-left-col { align-items: center; }
-      .mf-left-col .slide-sub { margin: 0 auto 40px; }
-      .mf-right-col { flex: none; width: 100%; max-width: 380px; }
+      .mf-left-col .slide-sub { margin: 0 auto 24px; }
+      .mf-right-col { flex: none; width: 100%; max-width: 360px; }
     }
 
     /* ── Dots ───────────────────────────────────────────── */
@@ -1161,12 +1176,14 @@ interface Particle {
     /* ── 3D Video Mockup ────────────────────────────────── */
     .vid-outer {
       position: absolute;
-      right: 3%;
-      top: 0; bottom: 0;
+      right: 2%;
+      top: 50%; transform: translateY(-50%);
       display: flex; align-items: center;
       z-index: 8;
       pointer-events: none;
-      width: 44%;
+      width: 42%;
+      max-height: 80vh;
+      overflow: hidden;
     }
     .vid-scene {
       width: 100%;
@@ -1381,12 +1398,26 @@ interface Particle {
     @media (max-width: 1100px) {
       .vid-outer { display: none; }
     }
+    @media (max-width: 1024px) {
+      .slide-content.mf-split { flex-direction: column; text-align: center; padding: 80px 24px 72px; gap: 20px; }
+      .mf-left-col { align-items: center; }
+      .mf-left-col .slide-sub { margin: 0 auto 20px; }
+      .mf-right-col { flex: none; width: 100%; max-width: 340px; }
+    }
     @media (max-width: 768px) {
-      .slide-icon-ring { width: 60px; height: 60px; border-radius: 16px; }
+      .slider-root { height: 100svh; }
+      .slide-content { padding: 72px 20px 60px; }
+      .slide-icon-ring { width: 52px; height: 52px; border-radius: 14px; }
+      .slide-h1 { font-size: clamp(1.9rem, 7vw, 2.8rem); }
       .sci-row { padding: 7px 14px; }
       .sa-ft-card { width: 160px; height: 100px; }
       .sa-drone-svg { width: 200px; }
       .sa-drone-float { margin-left: -100px; }
+    }
+    @media (max-width: 480px) {
+      .slide-content { padding: 68px 16px 56px; }
+      .slide-h1 { font-size: clamp(1.7rem, 8vw, 2.4rem); }
+      .slide-sub { font-size: 0.86rem; }
     }
   `]
 })

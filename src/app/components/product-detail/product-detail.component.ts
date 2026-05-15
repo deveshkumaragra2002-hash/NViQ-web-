@@ -28,19 +28,19 @@ import { AmcPartnersComponent } from '../amc-partners/amc-partners.component';
     AmcPartnersComponent,
   ],
   template: `
-    <!-- Back button -->
-    <div class="pd-back-bar">
-      <button class="pd-back" (click)="nav.go('products')" type="button">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        All Products
-      </button>
-    </div>
-
     <!-- GPS / Fleet product -->
     <ng-container *ngIf="nav.product() === 'gps'">
 
       <!-- ── GPS Image Slider Hero ── -->
       <div class="gps-slider">
+
+        <!-- Back button overlaid inside slider -->
+        <div class="pd-back-bar">
+          <button class="pd-back" (click)="nav.go('products')" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            All Products
+          </button>
+        </div>
 
         <!-- Slides -->
         <div class="gps-slides-track">
@@ -64,19 +64,6 @@ import { AmcPartnersComponent } from '../amc-partners/amc-partners.component';
           </div>
         </div>
 
-        <!-- Dot nav -->
-        <div class="gps-dots">
-          <button
-            *ngFor="let slide of gpsSlides; let i = index"
-            class="gps-dot"
-            [class.gps-dot-active]="i === currentGpsSlide"
-            (click)="goToGpsSlide(i)"
-            [attr.aria-label]="'Slide ' + (i+1)"
-          ></button>
-        </div>
-
-        <!-- Slide counter -->
-        <div class="gps-counter">{{ currentGpsSlide + 1 }} / {{ gpsSlides.length }}</div>
 
       </div>
       <app-features-section [productType]="'gps'"></app-features-section>
@@ -244,18 +231,21 @@ import { AmcPartnersComponent } from '../amc-partners/amc-partners.component';
     </ng-container>
   `,
   styles: [`
-    /* ── Back bar ───────────────────────────────────────── */
+    /* ── Back bar — overlaid inside slider ─────────────── */
     .pd-back-bar {
-      padding: 20px 32px 0;
+      position: absolute;
+      top: 20px; left: 32px;
+      z-index: 50;
     }
     .pd-back {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 600;
+      background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600;
       padding: 7px 16px; border-radius: 10px; cursor: pointer;
+      backdrop-filter: blur(10px);
       transition: all 0.2s ease;
     }
-    .pd-back:hover { color: #fff; border-color: rgba(255,255,255,0.25); transform: translateX(-3px); }
+    .pd-back:hover { color: #fff; border-color: rgba(255,255,255,0.4); transform: translateX(-3px); }
 
     /* ── Product Hero ───────────────────────────────────── */
     .pd-hero {
@@ -628,8 +618,8 @@ import { AmcPartnersComponent } from '../amc-partners/amc-partners.component';
     .gps-slider {
       position: relative;
       width: 100%;
-      height: 100vh;
-      min-height: 600px;
+      height: calc(100vh - 64px);
+      min-height: 500px;
       overflow: hidden;
     }
 
@@ -703,33 +693,11 @@ import { AmcPartnersComponent } from '../amc-partners/amc-partners.component';
       display: flex; gap: 14px; flex-wrap: wrap;
     }
 
-    /* Dots */
-    .gps-dots {
-      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 10px; z-index: 10;
-    }
-    .gps-dot {
-      width: 8px; height: 8px; border-radius: 999px;
-      border: none; background: rgba(255,255,255,0.35);
-      cursor: pointer; padding: 0;
-      transition: width 0.35s ease, background 0.35s ease;
-    }
-    .gps-dot-active {
-      width: 28px; background: #00D4FF;
-      box-shadow: 0 0 10px rgba(0,212,255,0.6);
-    }
-
-    /* Counter */
-    .gps-counter {
-      position: absolute; bottom: 28px; right: 24px;
-      font-size: 12px; font-weight: 700;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 0.08em; z-index: 10;
-    }
 
     @media (max-width: 768px) {
-      .gps-slider { height: 100svh; min-height: 500px; }
-      .gps-slide  { padding: 0 20px; align-items: center; padding-top: 80px; }
+      .gps-slider { height: calc(100svh - 56px); min-height: 460px; }
+      .pd-back-bar { top: 14px; left: 16px; }
+      .gps-slide  { padding: 0 20px; align-items: center; padding-top: 70px; }
       .gps-slide-title { font-size: clamp(1.6rem, 6vw, 2.4rem); }
       .gps-slide-desc  { font-size: 0.9rem; margin-bottom: 20px; }
       .gps-slide-content { max-width: 100%; }

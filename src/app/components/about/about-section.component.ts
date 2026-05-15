@@ -8,12 +8,13 @@ import { ApiService, LiveGpsStats } from '../../services/api.service';
 import { environment } from '../../../environments/environment';
 import { TiltDirective }         from '../../directives/tilt.directive';
 import { RevealDirective }       from '../../directives/reveal.directive';
+import { CountupDirective }      from '../../directives/countup.directive';
 import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.component';
 
 @Component({
   selector: 'app-about-section',
   standalone: true,
-  imports: [CommonModule, TiltDirective, RevealDirective, ParticleCanvasComponent],
+  imports: [CommonModule, TiltDirective, RevealDirective, CountupDirective, ParticleCanvasComponent],
   template: `
     <!-- ══ ABOUT HERO ════════════════════════════════════ -->
     <section class="ab-hero" aria-label="About NViQ">
@@ -21,12 +22,11 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
       <div class="ab-hero-glow"></div>
       <div class="ab-hero-content">
         <span class="ab-hero-tag">About NViQ</span>
-        <h1 class="ab-hero-title">We Are <span class="ab-hero-accent">NViQ</span></h1>
+        <h1 class="ab-hero-title">We Are <span class="ab-brand"><span class="ab-bn">N</span><span class="ab-bvi">vi</span><span class="ab-bq">Q</span></span></h1>
         <div class="ab-hero-divider"></div>
-        <p class="ab-hero-sub">More than a team — we are a family<br>redefining Indian fleet intelligence.</p>
-        <p class="ab-hero-desc">With passion and precision, we deliver cutting-edge GPS, fintech, and AI solutions that empower fleet businesses across India to operate smarter and grow faster.</p>
         <div class="ab-hero-chips">
           <span class="ab-chip">Founded 2026</span>
+          <span class="ab-chip">10+ Years GPS Experience</span>
           <span class="ab-chip">Free Consultation • AMFI Registered</span>
           <span class="ab-chip">ARN No: 359231</span>
           <span class="ab-chip">Pan-India</span>
@@ -64,7 +64,7 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
               — the data tools and investment infrastructure previously only available to the biggest players.
             </p>
             <p>
-              Founded in 2026, we're building at the intersection of GPS technology,
+              Backed by 10+ years of GPS and fleet tracking expertise, we're building at the intersection of GPS technology,
               AI-powered analytics, and Free Consultation • AMFI Registered investment support with ARN No: 359231 — all in one platform
               that works on day one without changing how you operate.
             </p>
@@ -74,7 +74,12 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
           <div class="ab-mission-stats glass-dark" appTilt [tiltMax]="8" [tiltGlow]="'rgba(59,130,246,0.2)'"
             appReveal="right" [revealDelay]="160">
             <div class="ab-stat" *ngFor="let s of stats">
-              <strong [style.color]="s.color">{{ s.val }}</strong>
+              <strong [style.color]="s.color"
+                *ngIf="s.num > 0"
+                [appCountup]="s.num"
+                [countupSuffix]="s.suffix"
+                [countupPrefix]="s.prefix">{{ s.val }}</strong>
+              <strong [style.color]="s.color" *ngIf="s.num === 0">{{ s.val }}</strong>
               <span>{{ s.label }}</span>
             </div>
           </div>
@@ -84,8 +89,34 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
         <div class="ab-values-header" appReveal="up" [revealDelay]="60">
           <h3>What We Stand For</h3>
         </div>
-        <div class="ab-values">
-          <div class="ab-value glass-dark" *ngFor="let v of values; let i = index"
+
+        <!-- GPS Values Row -->
+        <div class="ab-values-section-label" appReveal="up" [revealDelay]="40">
+          <span class="ab-vs-dot ab-vs-dot-gps"></span>
+          GPS Platform
+        </div>
+        <div class="ab-values ab-values-gps">
+          <div class="ab-value glass-dark" *ngFor="let v of gpsValues; let i = index"
+            appTilt [tiltMax]="10" [tiltGlow]="v.color + '30'"
+            appReveal="up" [revealDelay]="i * 80">
+            <div class="ab-value-icon" [style.background]="v.glow" [style.border-color]="v.color + '33'">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                [attr.stroke]="v.color" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path [attr.d]="v.icon"/>
+              </svg>
+            </div>
+            <h4>{{ v.title }}</h4>
+            <p>{{ v.desc }}</p>
+          </div>
+        </div>
+
+        <!-- MF Values Row -->
+        <div class="ab-values-section-label" appReveal="up" [revealDelay]="40">
+          <span class="ab-vs-dot ab-vs-dot-mf"></span>
+          Mutual Fund Platform
+        </div>
+        <div class="ab-values ab-values-mf">
+          <div class="ab-value glass-dark" *ngFor="let v of mfValues; let i = index"
             appTilt [tiltMax]="10" [tiltGlow]="v.color + '30'"
             appReveal="up" [revealDelay]="i * 80">
             <div class="ab-value-icon" [style.background]="v.glow" [style.border-color]="v.color + '33'">
@@ -197,12 +228,15 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
       color: #F0F6FF; margin: 0 0 18px; line-height: 1.0;
       text-shadow: 0 4px 40px rgba(0,0,0,0.5);
     }
-    .ab-hero-accent {
-      background: linear-gradient(120deg, #3B82F6, #818CF8);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 24px rgba(59,130,246,0.5));
+    .ab-brand {
+      font-family: 'Courier New', monospace;
+      font-size: inherit;
+      font-weight: 900; letter-spacing: -3px;
+      display: inline-flex; align-items: baseline;
     }
+    .ab-bn { color: #ffffff; font-weight: 900; }
+    .ab-bvi { color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: -2px; }
+    .ab-bq { color: #3B82F6; font-weight: 900; text-shadow: 0 0 24px rgba(59,130,246,0.5); }
 
     .ab-hero-divider {
       width: 64px; height: 3px;
@@ -385,15 +419,31 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
 
     /* Values */
     .ab-values-header {
-      text-align: center; margin-bottom: 36px;
+      text-align: center; margin-bottom: 28px;
     }
     .ab-values-header h3 {
       font-size: 2rem; font-weight: 800; color: #fff; letter-spacing: -0.02em;
     }
-    .ab-values {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
-      margin-bottom: 80px;
+    .ab-values-section-label {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 14px;
+      padding-left: 2px;
     }
+    .ab-vs-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .ab-vs-dot-gps { background: #00D4FF; box-shadow: 0 0 8px #00D4FF; }
+    .ab-vs-dot-mf  { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+
+    .ab-values {
+      display: grid; gap: 18px;
+      margin-bottom: 28px;
+    }
+    .ab-values-gps { grid-template-columns: repeat(4, 1fr); }
+    .ab-values-mf  { grid-template-columns: repeat(3, 1fr); margin-bottom: 80px; }
     .ab-value {
       padding: 28px 22px; border-radius: 18px;
       display: flex; flex-direction: column; gap: 12px;
@@ -499,7 +549,8 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
 
     /* Responsive */
     @media (max-width: 1024px) {
-      .ab-values { grid-template-columns: repeat(2,1fr); }
+      .ab-values-gps { grid-template-columns: repeat(2,1fr); }
+      .ab-values-mf  { grid-template-columns: repeat(2,1fr); }
       .ab-visual-grid { grid-template-columns: 1fr 1fr; height: auto; }
       .ab-vc-tall { grid-row: auto; height: 220px; }
       .ab-visual-card { height: 200px; }
@@ -507,7 +558,7 @@ import { ParticleCanvasComponent } from '../particle-canvas/particle-canvas.comp
     @media (max-width: 768px) {
       .ab-slide-content { padding: 0 24px; }
       .ab-mission { grid-template-columns: 1fr; }
-      .ab-values { grid-template-columns: 1fr; }
+      .ab-values-gps, .ab-values-mf { grid-template-columns: 1fr; }
       .ab-visual-grid { grid-template-columns: 1fr; height: auto; }
       .ab-visual-card { height: 200px; }
       .ab-timeline::before { left: 20px; }
@@ -528,16 +579,22 @@ export class AboutSectionComponent implements OnInit, OnDestroy {
   private readonly socketUrl = environment.apiUrl.replace(/\/api$/, '');
 
   stats = [
-    { val: '2026',   label: 'Founded in India',  color: '#60A5FA' },
-    { val: '99.9%',  label: 'Platform Uptime',   color: '#a78bfa' },
-    { val: 'AMFI',   label: 'ARN No: 359231',     color: '#22c55e' },
-    { val: 'India',  label: 'Headquartered',      color: '#3B82F6' },
+    { val: '10+',    label: 'Years GPS Experience', color: '#00D4FF', num: 10,   suffix: '+',  prefix: '' },
+    { val: '500+',   label: 'Vehicles Tracked',     color: '#60A5FA', num: 500,  suffix: '+',  prefix: '' },
+    { val: '99.9%',  label: 'Platform Uptime',      color: '#a78bfa', num: 99,   suffix: '%',  prefix: '' },
+    { val: 'AMFI',   label: 'ARN No: 359231',        color: '#22c55e', num: 0,    suffix: '',   prefix: '' },
   ];
 
-  values = [
+  gpsValues = [
+    {
+      icon: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z',
+      color: '#00D4FF', glow: 'rgba(0,212,255,0.1)',
+      title: '10+ Years of GPS Expertise',
+      desc: 'Over a decade of hands-on GPS and fleet tracking experience powering smarter routes, safer drivers, and profitable operations across India.',
+    },
     {
       icon: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-2',
-      color: '#00D4FF', glow: 'rgba(0,212,255,0.1)',
+      color: '#3B82F6', glow: 'rgba(59,130,246,0.1)',
       title: 'Data First',
       desc: 'Every product decision is backed by measurable outcomes. No vanity features.',
     },
@@ -553,6 +610,9 @@ export class AboutSectionComponent implements OnInit, OnDestroy {
       title: 'Built for India',
       desc: 'Designed for the real-world conditions of Indian fleet businesses.',
     },
+  ];
+
+  mfValues = [
     {
       icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4',
       color: '#22c55e', glow: 'rgba(34,197,94,0.1)',

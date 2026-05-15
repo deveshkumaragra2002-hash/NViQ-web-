@@ -38,7 +38,7 @@ interface Member {
           </div>
           <h2 class="tm-title">
             The People Behind<br>
-            <span class="tm-accent">NViQ</span>
+            <span class="tm-brand"><span class="tm-bn">N</span><span class="tm-bvi">vi</span><span class="tm-bq">Q</span></span>
           </h2>
           <p class="tm-sub">
             A passionate team of builders, operators, and creators — united by one mission:
@@ -175,11 +175,15 @@ interface Member {
       font-weight: 900; letter-spacing: -0.04em;
       color: #F0F6FF; line-height: 1.06; margin-bottom: 16px;
     }
-    .tm-accent {
-      background: linear-gradient(120deg, #3B82F6, #818cf8);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .tm-brand {
+      font-family: 'Courier New', monospace;
+      font-size: inherit;
+      font-weight: 900; letter-spacing: -3px;
+      display: inline-flex; align-items: baseline;
     }
+    .tm-bn { color: #ffffff; font-weight: 900; }
+    .tm-bvi { color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: -2px; }
+    .tm-bq { color: #3B82F6; font-weight: 900; }
     .tm-sub {
       color: #475569; font-size: 1rem; line-height: 1.72;
     }

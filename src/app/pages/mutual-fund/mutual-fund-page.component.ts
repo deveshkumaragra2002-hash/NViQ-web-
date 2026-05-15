@@ -3,12 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NavService } from '../../services/nav.service';
 import { MutualFundSliderComponent } from '../../components/mutual-fund-slider/mutual-fund-slider.component';
-import { MutualFundPricingComponent } from '../../components/mutual-fund-pricing/mutual-fund-pricing.component';
-import { CtaSectionComponent } from '../../components/cta/cta-section.component';
 import { TiltDirective } from '../../directives/tilt.directive';
 import { RevealDirective } from '../../directives/reveal.directive';
 import { ParticleCanvasComponent } from '../../components/particle-canvas/particle-canvas.component';
-import { ReviewFormComponent } from '../../components/review-form/review-form.component';
+import { AmcPartnersComponent } from '../../components/amc-partners/amc-partners.component';
 
 @Component({
   selector: 'app-mutual-fund-page',
@@ -16,12 +14,10 @@ import { ReviewFormComponent } from '../../components/review-form/review-form.co
   imports: [
     CommonModule,
     MutualFundSliderComponent,
-    MutualFundPricingComponent,
-    CtaSectionComponent,
     TiltDirective,
     RevealDirective,
     ParticleCanvasComponent,
-    ReviewFormComponent,
+    AmcPartnersComponent,
   ],
   template: `
     <!-- Back bar -->
@@ -62,14 +58,6 @@ import { ReviewFormComponent } from '../../components/review-form/review-form.co
           </div>
         </div>
       </div>
-
-      <!-- Arrows -->
-      <button class="mf-arrow mf-arrow-prev" (click)="prevSlide()" aria-label="Previous">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <button class="mf-arrow mf-arrow-next" (click)="nextSlide()" aria-label="Next">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-      </button>
 
       <!-- Dots -->
       <div class="mf-dots">
@@ -128,21 +116,37 @@ import { ReviewFormComponent } from '../../components/review-form/review-form.co
 
     <!-- MF Slider (SIP Calculator + Fund Cards) -->
     <div appReveal="up" [revealDelay]="100">
-      <app-mutual-fund-slider (openModal)="nav.openModalFor('mf')"></app-mutual-fund-slider>
+      <app-mutual-fund-slider></app-mutual-fund-slider>
     </div>
 
-    <!-- Pricing -->
-    <div appReveal="up" [revealDelay]="100">
-      <app-mutual-fund-pricing></app-mutual-fund-pricing>
-    </div>
+    <!-- Investment Details -->
+    <section class="mf-invest-details" appReveal="up" [revealDelay]="80">
+      <div class="mfid-header">
+        <span class="mfid-eyebrow">
+          <span class="mfid-dot"></span>
+          Personalized Planning
+        </span>
+        <h2 class="mfid-title">Everything You Need to Invest Smart</h2>
+        <p class="mfid-sub">Comprehensive investment planning tools designed for every type of investor.</p>
+      </div>
+      <div class="mfid-grid">
+        <div class="mfid-item" *ngFor="let item of mfInvestItems">
+          <div class="mfid-icon-wrap" [style.background]="item.iconBg">
+            <span class="mfid-icon">{{ item.icon }}</span>
+          </div>
+          <div class="mfid-content">
+            <span class="mfid-item-title">{{ item.title }}</span>
+            <span class="mfid-item-desc">{{ item.desc }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- User Reviews -->
-    <app-review-form [productType]="'mf'"></app-review-form>
-
-    <!-- CTA -->
+    <!-- AMC Partners -->
     <div appReveal="up" [revealDelay]="80">
-      <app-cta-section [product]="'mf'" (openModal)="nav.openModalFor('mf')"></app-cta-section>
+      <app-amc-partners></app-amc-partners>
     </div>
+
   `,
   styles: [`
     /* ── MF Image Slider ──────────────────────────────── */
@@ -251,19 +255,6 @@ import { ReviewFormComponent } from '../../components/review-form/review-form.co
     .mf-slide-btn:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(59,130,246,0.45); }
 
     /* Arrows */
-    .mf-arrow {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      z-index: 10; width: 50px; height: 50px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.35); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; backdrop-filter: blur(10px);
-      transition: all 0.25s ease;
-    }
-    .mf-arrow:hover { background: rgba(59,130,246,0.25); border-color: rgba(59,130,246,0.5); }
-    .mf-arrow-prev { left: 20px; }
-    .mf-arrow-next { right: 20px; }
-
     /* Dots */
     .mf-dots {
       position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
@@ -288,9 +279,6 @@ import { ReviewFormComponent } from '../../components/review-form/review-form.co
       .mf-slide { padding: 0 20px; align-items: center; padding-top: 80px; }
       .mf-slide-stats { gap: 20px; }
       .mf-stat-val { font-size: 1.3rem; }
-      .mf-arrow { width: 36px; height: 36px; }
-      .mf-arrow-prev { left: 8px; }
-      .mf-arrow-next { right: 8px; }
     }
 
     /* ── Back bar ─────────────────────────────────────── */
@@ -436,6 +424,60 @@ import { ReviewFormComponent } from '../../components/review-form/review-form.co
       .mf-trust-text { font-size: 12px; }
       .mf-trust-sub { font-size: 10px; }
     }
+
+    /* ── MF Investment Details ──────────────────────────── */
+    .mf-invest-details {
+      padding: 80px 32px 72px;
+      background: linear-gradient(180deg, #060C1A 0%, #040810 100%);
+    }
+    .mfid-header { text-align: center; max-width: 620px; margin: 0 auto 52px; }
+    .mfid-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.16em;
+      color: #60A5FA; margin-bottom: 14px;
+    }
+    .mfid-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #60A5FA; box-shadow: 0 0 8px #60A5FA;
+    }
+    .mfid-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+      font-weight: 900; letter-spacing: -0.03em; color: #fff; margin: 0 0 14px;
+    }
+    .mfid-sub {
+      font-size: clamp(0.88rem, 1.3vw, 1rem);
+      color: rgba(255,255,255,0.48); line-height: 1.7; margin: 0;
+    }
+    .mfid-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px; max-width: 1100px; margin: 0 auto;
+    }
+    .mfid-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 20px 22px; border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+    .mfid-item:hover {
+      border-color: rgba(96,165,250,0.25);
+      background: rgba(59,130,246,0.05); transform: translateY(-3px);
+    }
+    .mfid-icon-wrap {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .mfid-icon { font-size: 18px; }
+    .mfid-content { display: flex; flex-direction: column; gap: 4px; }
+    .mfid-item-title { font-size: 14px; font-weight: 800; color: rgba(255,255,255,0.9); }
+    .mfid-item-desc  { font-size: 12.5px; color: rgba(255,255,255,0.45); line-height: 1.55; }
+    @media (max-width: 768px) {
+      .mf-invest-details { padding: 56px 16px 48px; }
+      .mfid-grid { grid-template-columns: 1fr; }
+    }
   `]
 })
 export class MutualFundPageComponent implements OnInit, OnDestroy {
@@ -444,6 +486,18 @@ export class MutualFundPageComponent implements OnInit, OnDestroy {
 
   currentSlide = 0;
   private timer: any;
+
+  mfInvestItems = [
+    { icon: '💰', iconBg: 'rgba(59,130,246,0.15)',  title: 'Monthly Investment Budget',  desc: 'Set and adjust your SIP amount anytime — start from as low as ₹500/month.' },
+    { icon: '🎯', iconBg: 'rgba(99,102,241,0.15)',  title: 'Investment Goal',             desc: 'Plan for retirement, child education, home purchase, or wealth creation.' },
+    { icon: '📈', iconBg: 'rgba(16,185,129,0.15)',  title: 'Investment Experience',       desc: 'Beginner to expert — get fund recommendations matched to your experience level.' },
+    { icon: '⚖️', iconBg: 'rgba(245,158,11,0.15)',  title: 'Risk Profile',                desc: 'Assess your risk tolerance and discover funds aligned with your comfort zone.' },
+    { icon: '📊', iconBg: 'rgba(239,68,68,0.15)',   title: 'Expected Return',             desc: 'Compare historical returns across funds and project your future wealth growth.' },
+    { icon: '🕐', iconBg: 'rgba(167,139,250,0.15)', title: 'Investment Duration',         desc: 'Short-term or long-term — pick funds with the right time horizon for your needs.' },
+    { icon: '📅', iconBg: 'rgba(59,130,246,0.15)',  title: 'SIP Planning',                desc: 'Auto-debit scheduling, pause & resume SIPs, and systematic step-up options.' },
+    { icon: '🧾', iconBg: 'rgba(16,185,129,0.15)',  title: 'Tax Saving Details',          desc: 'ELSS funds for 80C deductions up to ₹1.5L per year — save tax while you grow.' },
+    { icon: '📱', iconBg: 'rgba(99,102,241,0.15)',  title: 'Portfolio Tracking',          desc: 'Real-time NAV, XIRR calculation, and consolidated portfolio view in one place.' },
+  ];
 
   trustItems = [
     { icon: '🎯', text: 'Free Consultation • AMFI Registered', sub: 'ARN No: 359231' },
@@ -455,33 +509,63 @@ export class MutualFundPageComponent implements OnInit, OnDestroy {
 
   mfSlides = [
     {
-      tag: 'SIP Investing',
+      tag: 'SIP Investment',
       title: 'Start Your SIP Journey Today',
       desc: 'Invest as little as ₹1,000/month and watch your wealth grow with the power of compounding. AMFI-registered, zero commission.',
       stats: [
         { val: '₹1,000', label: 'Min SIP Amount' },
-        { val: '15%+', label: 'Avg. Returns' },
+        { val: '12–18%', label: 'Expected Returns' },
         { val: '0%', label: 'Commission' },
       ]
     },
     {
-      tag: 'Portfolio Tracking',
-      title: 'Track Your Wealth in Real-Time',
-      desc: 'Monitor NAV updates, portfolio performance, and gains/losses on a smart dashboard built for fleet operators.',
+      tag: 'Expected Returns',
+      title: 'Maximize Your Investment Returns',
+      desc: 'Top-performing equity mutual funds have consistently delivered 12–18% annualised returns over 5+ year horizons.',
       stats: [
-        { val: '1000+', label: 'Funds Available' },
-        { val: 'Live', label: 'NAV Updates' },
-        { val: '24/7', label: 'Access' },
+        { val: '12–18%', label: 'Annual Returns' },
+        { val: '5+ Years', label: 'Track Record' },
+        { val: 'Live', label: 'Performance Data' },
       ]
     },
     {
-      tag: 'Secure & Trusted',
-      title: 'Bank-Grade Security for Your Money',
-      desc: 'Your investments are protected with 256-bit encryption, two-factor authentication, and full AMFI compliance. ARN No: 359231.',
+      tag: 'Risk Assessment',
+      title: 'Invest with Confidence',
+      desc: 'Every investor has a unique risk appetite. Our risk profiler maps your income, age, and goals to a personalised risk score.',
       stats: [
-        { val: '256-bit', label: 'Encryption' },
-        { val: 'AMFI', label: 'ARN: 359231' },
-        { val: '₹0', label: 'Hidden Charges' },
+        { val: 'Low–High', label: 'Risk Options' },
+        { val: 'Personalized', label: 'Risk Score' },
+        { val: 'Smart', label: 'Rebalancing' },
+      ]
+    },
+    {
+      tag: 'Wealth Compounding',
+      title: 'The Power of Compounding',
+      desc: '₹5,000/month invested for 25 years at 12% grows to over ₹1 Crore. Start small, grow big with systematic investing.',
+      stats: [
+        { val: '₹1Cr+', label: 'Potential Growth' },
+        { val: '25 Years', label: 'Time Horizon' },
+        { val: '12%', label: 'Avg. Returns' },
+      ]
+    },
+    {
+      tag: 'Tax Saving (ELSS)',
+      title: 'Save Tax While Investing',
+      desc: 'ELSS funds qualify for ₹1.5L deduction under Section 80C — saving you up to ₹46,800 in tax per year.',
+      stats: [
+        { val: '₹46,800', label: 'Tax Savings' },
+        { val: '3 Years', label: 'Lock-in Period' },
+        { val: 'Market-linked', label: 'Returns' },
+      ]
+    },
+    {
+      tag: 'Portfolio Management',
+      title: 'Complete Investment Dashboard',
+      desc: 'Monitor NAV updates, portfolio performance, and gains/losses on a smart dashboard built for investors.',
+      stats: [
+        { val: '1000+', label: 'Funds Available' },
+        { val: 'Live NAV', label: 'Updates' },
+        { val: '24/7', label: 'Access' },
       ]
     },
   ];
@@ -489,6 +573,10 @@ export class MutualFundPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.nav.product.set('mf');
     this.startAutoplay();
+    setTimeout(() => {
+      const el = document.getElementById('mutual-funds');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 500);
   }
   ngOnDestroy(): void { clearInterval(this.timer); }
 

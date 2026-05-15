@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { NavService } from '../../services/nav.service';
 
 @Component({
   selector: 'app-cta-final',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   template: `
     <section class="cta-wrap" id="cta">
       <!-- Animated background -->
@@ -36,19 +36,19 @@ import { RouterLink } from '@angular/router';
 
           <!-- Actions -->
           <div class="cta-actions">
-            <a routerLink="/contact" class="cta-btn-primary">
+            <button type="button" class="cta-btn-primary" (click)="openModal()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
               </svg>
               Get Started Free
-            </a>
-            <a routerLink="/contact" class="cta-btn-ghost">
+            </button>
+            <button type="button" class="cta-btn-ghost" (click)="openModal()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/>
               </svg>
               Book a Live Demo
-            </a>
+            </button>
           </div>
 
           <!-- Trust pills -->
@@ -322,7 +322,11 @@ import { RouterLink } from '@angular/router';
   `]
 })
 export class CtaFinalComponent {
-  @Output() openModal = new EventEmitter<void>();
+  private nav = inject(NavService);
+
+  openModal(): void {
+    this.nav.openModalFor('gps');
+  }
 
   trustPills = [
     'No credit card required',

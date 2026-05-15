@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NavService } from '../services/nav.service';
 
 @Component({
   selector: 'app-pricing',
@@ -700,6 +701,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   `]
 })
 export class PricingComponent {
+  private nav = inject(NavService);
 
   /* ===== SIGNALS ===== */
   modalOpen   = signal(false);
@@ -750,11 +752,7 @@ export class PricingComponent {
 
   /* ===== MODAL CONTROL ===== */
   openModal(): void {
-    this.modalOpen.set(true);
-    this.submitSuccess.set(false);
-    this.apiError.set('');
-    this.leadForm.reset();
-    document.body.style.overflow = 'hidden';
+    this.nav.openModalFor('gps');
   }
 
   closeModal(): void {

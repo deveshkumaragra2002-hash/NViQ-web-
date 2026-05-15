@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
+import { NavService } from '../../services/nav.service';
 
 type TabKey = 'sip' | 'goal';
 
@@ -212,7 +213,7 @@ type InvestmentPlan = {
   styles: [],
 })
 export class MutualFundsSectionComponent implements OnDestroy {
-  @Output() openModal = new EventEmitter<void>();
+  private nav = inject(NavService);
 
   activeTab: TabKey = 'sip';
 
@@ -288,8 +289,7 @@ export class MutualFundsSectionComponent implements OnDestroy {
   }
 
   onPrimaryCta(): void {
-    this.sendPrompt('Start SIP Investment');
-    this.openModal.emit();
+    this.nav.openModalFor('mf');
   }
 
   sendPrompt(text: string): void {

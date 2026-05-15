@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
+import { NavService } from '../../services/nav.service';
 
 interface CtaConfig {
   badge:    string;
@@ -76,14 +77,14 @@ const CTA_CONFIGS: Record<string, CtaConfig> = {
 
         <!-- Buttons -->
         <div class="cta-actions">
-          <button type="button" class="btn-primary-cta" (click)="openModal.emit()">
+          <button type="button" class="btn-primary-cta" (click)="nav.openModalFor(product)">
             {{ cfg.primary }}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </button>
-          <button type="button" class="btn-ghost-cta" (click)="openModal.emit()">
+          <button type="button" class="btn-ghost-cta" (click)="nav.openModalFor(product)">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round">
               <polygon points="5 3 19 12 5 21 5 3"/>
@@ -304,7 +305,7 @@ const CTA_CONFIGS: Record<string, CtaConfig> = {
 })
 export class CtaSectionComponent {
   @Input() product: 'gps' | 'mf' = 'gps';
-  @Output() openModal = new EventEmitter<void>();
+  nav = inject(NavService);
 
   get cfg(): CtaConfig {
     return CTA_CONFIGS[this.product] ?? CTA_CONFIGS['gps'];

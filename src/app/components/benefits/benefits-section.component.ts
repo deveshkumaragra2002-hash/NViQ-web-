@@ -8,6 +8,7 @@ interface Benefit {
   iconPath: string;
   iconColor: string;
   glow: string;
+  tag?: string;
   title: string;
   desc: string;
   stat: string;
@@ -67,8 +68,16 @@ interface Benefit {
               </svg>
             </div>
 
-            <!-- Animated counter -->
-            <div class="card-stat">
+            <!-- Series tag badge (product series cards) -->
+            <div *ngIf="b.tag" class="card-tag"
+              [style.color]="b.iconColor"
+              [style.border-color]="b.iconColor + '33'"
+              [style.background]="b.glow">
+              {{ b.tag }}
+            </div>
+
+            <!-- Animated counter (metric cards) -->
+            <div *ngIf="!b.tag" class="card-stat">
               <span class="stat-num" [style.color]="b.iconColor">{{ displayNums[i] }}{{ b.statSuffix }}</span>
               <span class="stat-lbl">{{ b.statLabel }}</span>
             </div>
@@ -129,7 +138,7 @@ interface Benefit {
     /* ── Grid ───────────────────────────────────────────── */
     .ben-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 20px;
     }
 
@@ -169,6 +178,18 @@ interface Benefit {
     }
     .ben-card:hover .card-icon-ring { transform: rotate(-6deg) scale(1.08); }
 
+    /* Series tag badge */
+    .card-tag {
+      display: inline-flex; align-items: center;
+      padding: 5px 14px; border-radius: 999px;
+      border: 1px solid;
+      font-size: 11px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      width: fit-content;
+      transition: transform 0.3s ease;
+    }
+    .ben-card:hover .card-tag { transform: scale(1.06); }
+
     /* Stat counter */
     .card-stat {
       display: flex; flex-direction: column; gap: 2px;
@@ -204,8 +225,9 @@ interface Benefit {
     .ben-card.visible .card-bottom-bar { width: 100%; }
 
     /* ── Responsive ─────────────────────────────────────── */
-    @media (max-width: 1024px) { .ben-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 580px)  { .ben-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 900px)  { .ben-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px)  { .ben-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 400px)  { .ben-grid { grid-template-columns: 1fr; } }
   `]
 })
 export class BenefitsSectionComponent implements AfterViewInit, OnDestroy {
@@ -251,27 +273,43 @@ export class BenefitsSectionComponent implements AfterViewInit, OnDestroy {
   gpsBenefits: Benefit[] = [
     {
       iconPath: 'M12 21s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10zM12 11m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0',
-      iconColor: '#00D4FF', glow: 'rgba(0,212,255,0.1)',
-      title: 'Live GPS Visibility', desc: 'Track every vehicle in real time. Know exactly where your fleet is, where it\'s been, and where it\'s going.',
-      stat: '10K+', statLabel: 'Vehicles Tracked', statTarget: 10000, statSuffix: '+'
+      iconColor: '#00D4FF', glow: 'rgba(0,212,255,0.08)',
+      tag: 'Basic',
+      title: 'NViQ Lite',
+      desc: 'Entry-level GPS tracking for small fleets. Real-time location, trip history, and driver behavior monitoring out of the box.',
+      stat: '', statLabel: '', statTarget: 0, statSuffix: ''
     },
     {
-      iconPath: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8',
-      iconColor: '#34D399', glow: 'rgba(52,211,153,0.1)',
-      title: 'Smart Expense Control', desc: 'Automatically reconcile fuel, tolls, and maintenance. Cut unnecessary spend by catching anomalies instantly.',
-      stat: '28', statLabel: '% Cost Reduction', statTarget: 28, statSuffix: '%'
+      iconPath: 'M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01',
+      iconColor: '#34D399', glow: 'rgba(52,211,153,0.08)',
+      tag: '4G',
+      title: 'NViQ Smart',
+      desc: 'High-speed 4G connectivity with live alerts, geo-fencing, and route analytics for growing mid-size fleets.',
+      stat: '', statLabel: '', statTarget: 0, statSuffix: ''
     },
     {
-      iconPath: 'M22 12h-4l-3 9L9 3l-3 9H2',
-      iconColor: '#A78BFA', glow: 'rgba(167,139,250,0.1)',
-      title: 'AI-Driven Alerts', desc: 'Receive instant alerts for speeding, harsh braking, route deviation, and maintenance windows before they escalate.',
-      stat: '3.2×', statLabel: 'Faster Response', statTarget: 3.2, statSuffix: '×'
+      iconPath: 'M23 6l-9.5 9.5-5-5L1 18M17 6h6v6',
+      iconColor: '#A78BFA', glow: 'rgba(167,139,250,0.08)',
+      tag: 'Pro',
+      title: 'NViQ Pro',
+      desc: 'AI-powered fleet intelligence with predictive maintenance, fuel cost analytics, and advanced multi-branch reporting.',
+      stat: '', statLabel: '', statTarget: 0, statSuffix: ''
     },
     {
       iconPath: 'M12 2l8 4v6c0 5-3.3 8.6-8 10-4.7-1.4-8-5-8-10V6l8-4zM9.2 12.4l2 2 3.6-4',
-      iconColor: '#FB923C', glow: 'rgba(251,146,60,0.1)',
-      title: 'Certified Compliance', desc: 'Stay audit-ready with automated logs, digital trip sheets, and compliance-ready financial reporting for mixed fleets.',
-      stat: '99.9', statLabel: '% Uptime SLA', statTarget: 99.9, statSuffix: '%'
+      iconColor: '#FB923C', glow: 'rgba(251,146,60,0.08)',
+      tag: 'AIS140',
+      title: 'NViQ AIS140',
+      desc: 'AIS140-certified devices meeting all government mandates for commercial vehicle compliance, panic alerts, and audit-ready logs.',
+      stat: '', statLabel: '', statTarget: 0, statSuffix: ''
+    },
+    {
+      iconPath: 'M23 7l-7 5 7 5V7zM1 5h15a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H1a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z',
+      iconColor: '#F43F5E', glow: 'rgba(244,63,94,0.08)',
+      tag: 'Dashcam',
+      title: 'Vision Series',
+      desc: 'Dual-channel AI dashcam with event-based recording, cloud backup, and real-time driver coaching to reduce accidents.',
+      stat: '', statLabel: '', statTarget: 0, statSuffix: ''
     },
   ];
 

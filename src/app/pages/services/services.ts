@@ -1,15 +1,20 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NavService } from '../../services/nav.service';
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [CommonModule],
   templateUrl: './services.html',
   styleUrls: ['./services.css']
 })
 export class ServicesComponent {
+  private nav = inject(NavService);
+
+  openModal(): void {
+    this.nav.openModalFor('gps');
+  }
   services = [
     {
       emoji: '📍',

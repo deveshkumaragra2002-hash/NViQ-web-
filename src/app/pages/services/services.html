@@ -1,4 +1,4 @@
-<div class="page-wrapper">
+﻿<div class="page-wrapper">
   <!-- Hero -->
   <section class="page-hero">
     <div class="hero-glow"></div>
@@ -27,9 +27,7 @@
               {{ f }}
             </div>
           </div>
-          <a routerLink="/contact" class="btn-service" [style.color]="s.color" [style.borderColor]="s.color + '33'" [style.background]="s.color + '0d'">
-            Learn More & Get Demo →
-          </a>
+          <button type="button" class="btn-service" (click)="openModal()" [style.color]="s.color" [style.borderColor]="s.color + '33'" [style.background]="s.color + '0d'">Learn More &amp; Get Demo →</button>
         </div>
 
         <!-- Visual Card -->
@@ -65,8 +63,8 @@
         <h2>Ready to transform your fleet?</h2>
         <p>Start with a 14-day free trial. No credit card required. Full access to all features.</p>
         <div class="cta-btns">
-          <a routerLink="/contact" class="btn-primary">Start Free Trial</a>
-          <a routerLink="/contact" class="btn-ghost">Schedule a Demo</a>
+          <button type="button" class="btn-primary" (click)="openModal()">Start Free Trial</button>
+          <button type="button" class="btn-ghost" (click)="openModal()">Schedule a Demo</button>
         </div>
       </div>
     </div>

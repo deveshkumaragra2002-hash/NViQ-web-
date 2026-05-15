@@ -502,22 +502,18 @@ export class ContactSectionComponent implements OnInit {
         icon: this.iconPhone,
         color: '#2563EB',
         label: 'Phone',
-        values: ['+91 8010001095'],
+        values: ['+91 8529245390'],
       },
       {
         icon: this.iconMail,
         color: '#60B4FF',
         label: 'Email',
-        values: [
-          { tag: 'General',    val: 'nviqbharat@gmail.com' },
-          { tag: 'Support',    val: 'support@nviq.in' },
-          { tag: 'Escalation', val: 'nodal@nviq.in' },
-        ],
+        values: ['naviqbharat@gmail.com'],
       },
       {
         icon: this.iconPin,
         color: '#22c55e',
-        label: 'Corporate Office',
+        label: 'Registered Office',
         values: [
           'NViQ Technologies Pvt. Ltd.',
           'Malakhera Jamalpur 301406,',

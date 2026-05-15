@@ -62,7 +62,11 @@ export type EnquirySource =
   | 'mf-enquiry'
   | 'fastag-enquiry'
   | 'drone-enquiry'
+  | 'insurance-enquiry'
+  | 'ai-enquiry'
   | 'other';
+
+export type ProductCategory = 'gps' | 'mf' | 'insurance' | 'ai' | 'fastag' | 'other';
 
 export interface ContactPayload {
   name: string;
@@ -70,21 +74,26 @@ export interface ContactPayload {
   phone?: string;
   message: string;
   source?: EnquirySource;
-  productType?: string;
+  productCategory?: ProductCategory;
 }
 
 export interface ProductEnquiryPayload {
   name: string;
   email: string;
   phone: string;
-  // GPS-specific optional fields
-  company?:     string;
-  fleetSize?:   string;
-  vehicleType?: string;
-  // MF-specific optional fields
-  budget?:     string;
-  goal?:       string;
-  experience?: string;
+  productCategory: ProductCategory;
+  // GPS / FASTag fields
+  company?:      string;
+  fleetSize?:    string;
+  businessType?: string;
+  requirement?:  string;
+  // MF fields
+  budget?:          string;
+  goal?:            string;
+  experience?:      string;
+  riskPreference?:  string;
+  // Insurance / AI / Other
+  message?: string;
 }
 
 // ─── Service ──────────────────────────────────────────────────────────────────
@@ -150,46 +159,60 @@ export class ApiService {
     ).pipe(catchError(this.handleError));
   }
 
-  /**
-   * Product-specific enquiry submission.
-   * Routes to /contact with enriched product metadata.
-   * When backend adds dedicated endpoints (/gps, /mutual-fund etc.),
-   * only this method needs updating — no component changes required.
-   */
-  submitProductEnquiry(
-    productType: 'gps' | 'mf' | 'fastag' | 'drone',
-    payload: ProductEnquiryPayload,
-  ): Observable<{ success: boolean; message: string }> {
-    const meta: Record<string, { message: string; source: EnquirySource }> = {
-      gps: {
-        message: '[GPS Enquiry] Interested in GPS Fleet Tracking — Rs 499/vehicle/month.',
-        source:  'gps-enquiry',
-      },
-      mf: {
-        message: '[MF Enquiry] Interested in Mutual Fund investments — SIP from ₹1,000/month.',
-        source:  'mf-enquiry',
-      },
-      fastag: {
-        message: '[FASTag Enquiry] Interested in FASTag fleet management.',
-        source:  'fastag-enquiry',
-      },
-      drone: {
-        message: '[Drone Enquiry] Interested in agricultural drone solutions.',
-        source:  'drone-enquiry',
-      },
+  submitProductEnquiry(payload: ProductEnquiryPayload): Observable<{ success: boolean; message: string }> {
+    const sourceMap: Record<ProductCategory, EnquirySource> = {
+      gps:       'gps-enquiry',
+      mf:        'mf-enquiry',
+      fastag:    'fastag-enquiry',
+      insurance: 'insurance-enquiry',
+      ai:        'ai-enquiry',
+      other:     'other',
+    };
+    const labelMap: Record<ProductCategory, string> = {
+      gps:       'GPS Fleet Tracking',
+      mf:        'Mutual Fund Investment',
+      fastag:    'FASTag Fleet',
+      insurance: 'Insurance',
+      ai:        'AI Tools',
+      other:     'General Enquiry',
     };
 
-    const { source } = meta[productType];
-    let { message } = meta[productType];
-    if (productType === 'gps' && (payload.company || payload.fleetSize || payload.vehicleType)) {
-      message += ` | Company: ${payload.company ?? '-'} | Fleet Size: ${payload.fleetSize ?? '-'} | Vehicle Type: ${payload.vehicleType ?? '-'}`;
+    const cat = payload.productCategory;
+    const source = sourceMap[cat] ?? 'lead-modal';
+    const label  = labelMap[cat]  ?? 'Product';
+
+    let parts: string[] = [`[${label} Enquiry]`];
+    if (cat === 'gps' || cat === 'fastag') {
+      if (payload.company)      parts.push(`Company: ${payload.company}`);
+      if (payload.businessType) parts.push(`Business Type: ${payload.businessType}`);
+      if (payload.fleetSize)    parts.push(`Fleet Size: ${payload.fleetSize}`);
+      if (payload.requirement)  parts.push(`Requirement: ${payload.requirement}`);
     }
-    if (productType === 'mf' && (payload.budget || payload.goal || payload.experience)) {
-      message += ` | Budget: ${payload.budget ?? '-'} | Goal: ${payload.goal ?? '-'} | Experience: ${payload.experience ?? '-'}`;
+    if (cat === 'mf') {
+      if (payload.budget)         parts.push(`Budget: ${payload.budget}`);
+      if (payload.goal)           parts.push(`Goal: ${payload.goal}`);
+      if (payload.experience)     parts.push(`Experience: ${payload.experience}`);
+      if (payload.riskPreference) parts.push(`Risk: ${payload.riskPreference}`);
     }
+    if (payload.message) parts.push(payload.message);
+
+    const extraData: Record<string, string> = {};
+    if (payload.company)      extraData['company']      = payload.company;
+    if (payload.businessType) extraData['businessType'] = payload.businessType;
+    if (payload.fleetSize)    extraData['fleetSize']    = payload.fleetSize;
+    if (payload.requirement)  extraData['requirement']  = payload.requirement;
+    if (payload.budget)       extraData['budget']       = payload.budget;
+    if (payload.goal)         extraData['goal']         = payload.goal;
+    if (payload.experience)   extraData['experience']   = payload.experience;
+    if (payload.riskPreference) extraData['riskPreference'] = payload.riskPreference;
+
     return this.http.post<{ success: boolean; message: string }>(
       `${this.BASE}/contact`,
-      { ...payload, message, source, productType },
+      {
+        name: payload.name, email: payload.email, phone: payload.phone,
+        message: parts.join(' | '),
+        source, productCategory: cat, extraData,
+      },
     ).pipe(catchError(this.handleError));
   }
 

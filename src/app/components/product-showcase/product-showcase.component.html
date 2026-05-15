@@ -1,99 +1,167 @@
 <section class="ps-root">
-
-  <!-- 3D Particle Canvas -->
   <canvas #ptCanvas class="ps-canvas"></canvas>
 
   <div class="ps-container">
-    <div class="ps-header">
+    <div class="ps-header" appReveal="up">
+      <span class="ps-eyebrow">What We Offer</span>
       <h2 class="ps-title">Our Products</h2>
-      <p class="ps-subtitle">Innovative solutions for every need</p>
+      <p class="ps-subtitle">Innovative solutions built for India's growing industries</p>
     </div>
 
     <div class="ps-list">
       <article
         *ngFor="let p of products; let i = index"
         class="ps-card"
+        [style.--accent]="p.accent"
+        [style.--accent-glow]="p.accent + '14'"
         (click)="openProduct(p.id)"
-        [style.animationDelay]="(i * 90) + 'ms'"
+        appReveal="up" [revealDelay]="i * 100"
+        appTilt [tiltMax]="5" [tiltGlow]="p.accent + '18'"
       >
-        <div class="ps-card-bg" aria-hidden="true"></div>
+        <div class="ps-card-glow"></div>
 
         <div class="ps-inner">
-          <!-- LEFT: visual mockup -->
-          <div class="ps-visual">
-            <div class="ps-mockup" [ngClass]="{
-              'v-mf': p.visual === 'mf',
-              'v-gps': p.visual === 'gps',
-              'v-fastag': p.visual === 'fastag',
-              'v-drone': p.visual === 'drone'
-            }">
-              <div class="ps-mockup-header">
-                <span class="ps-mockup-icon" aria-hidden="true">
-                  <ng-container *ngIf="p.visual === 'mf'">📈</ng-container>
-                  <ng-container *ngIf="p.visual === 'gps'">🗺️</ng-container>
-                  <ng-container *ngIf="p.visual === 'fastag'">💳</ng-container>
-                  <ng-container *ngIf="p.visual === 'drone'">🚁</ng-container>
-                </span>
-                <span class="ps-mockup-name">
-                  <ng-container *ngIf="p.visual === 'mf'">Mutual Fund</ng-container>
-                  <ng-container *ngIf="p.visual === 'gps'">GPS Tracking</ng-container>
-                  <ng-container *ngIf="p.visual === 'fastag'">FASTag</ng-container>
-                  <ng-container *ngIf="p.visual === 'drone'">Agri Drone</ng-container>
-                </span>
-              </div>
 
-              <div class="ps-mockup-body">
-                <div class="ps-mf-chart" *ngIf="p.visual === 'mf'">
-                  <span class="ps-bar" style="height: 62%"></span>
-                  <span class="ps-bar" style="height: 88%"></span>
-                  <span class="ps-bar" style="height: 72%"></span>
-                  <span class="ps-bar" style="height: 96%"></span>
+          <!-- ── LEFT: Rich visual per product ── -->
+          <div class="ps-visual"
+            [class.ps-visual-gps]="p.visual === 'gps'"
+            [class.ps-visual-mf]="p.visual === 'mf'"
+            [class.ps-visual-fastag]="p.visual === 'fastag'"
+            [class.ps-visual-drone]="p.visual === 'drone'">
+
+            <!-- GPS Dashboard -->
+            <ng-container *ngIf="p.visual === 'gps'">
+              <div class="ps-gps-dashboard">
+                <div class="ps-gps-topbar">
+                  <span class="ps-gps-topbar-title">Fleet Dashboard</span>
+                  <span class="ps-live-badge">
+                    <span class="ps-live-dot"></span>Live
+                  </span>
                 </div>
-
-                <div class="ps-gps-map" *ngIf="p.visual === 'gps'">
-                  <span class="ps-route"></span>
-                  <span class="ps-marker"></span>
+                <div class="ps-map-area">
+                  <svg class="ps-map-route" viewBox="0 0 400 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M40 140 C80 140 90 60 140 60 C190 60 200 110 250 90 C300 70 320 40 370 50"
+                      stroke="rgba(0,212,255,0.25)" stroke-width="2" stroke-dasharray="6 4"/>
+                    <path d="M40 140 C80 140 90 60 140 60 C190 60 200 110 250 90 C300 70 320 40 370 50"
+                      stroke="rgba(0,212,255,0.7)" stroke-width="2" stroke-linecap="round"
+                      stroke-dasharray="220" stroke-dashoffset="0">
+                      <animate attributeName="stroke-dashoffset" values="440;0" dur="2.5s" repeatCount="indefinite"/>
+                    </path>
+                    <!-- Origin -->
+                    <circle cx="40" cy="140" r="5" fill="#00D4FF" opacity="0.9"/>
+                    <circle cx="40" cy="140" r="10" fill="rgba(0,212,255,0.15)"/>
+                    <!-- Dest -->
+                    <circle cx="370" cy="50" r="5" fill="#22c55e" opacity="0.9"/>
+                    <circle cx="370" cy="50" r="10" fill="rgba(34,197,94,0.15)"/>
+                  </svg>
+                  <div class="ps-vehicle-dot"></div>
                 </div>
-
-                <div class="ps-fastag-balance" *ngIf="p.visual === 'fastag'">
-                  <div class="ps-balance-chip">
-                    <span class="ps-balance-label">Available</span>
-                    <span class="ps-balance-value">₹1,250</span>
+                <div class="ps-gps-stats">
+                  <div class="ps-gps-stat-pill">
+                    <strong>48</strong>
+                    <span>Vehicles Live</span>
                   </div>
-                  <div class="ps-fastag-mini">
-                    <span class="ps-mini-pill"></span>
-                    <span class="ps-mini-pill"></span>
+                  <div class="ps-gps-stat-pill">
+                    <strong>98%</strong>
+                    <span>Uptime</span>
+                  </div>
+                  <div class="ps-gps-stat-pill">
+                    <strong>2.4s</strong>
+                    <span>Update</span>
                   </div>
                 </div>
+              </div>
+            </ng-container>
 
-                <div class="ps-drone-view" *ngIf="p.visual === 'drone'">
-                  <div class="ps-field-grid"></div>
-                  <div class="ps-scan" aria-hidden="true"></div>
+            <!-- MF Dashboard -->
+            <ng-container *ngIf="p.visual === 'mf'">
+              <div class="ps-mf-dashboard">
+                <div class="ps-mf-topbar">
+                  <span class="ps-mf-title-label">Portfolio Value</span>
+                  <span class="ps-mf-returns">+18.4% YTD</span>
+                </div>
+                <div class="ps-mf-value-row">
+                  <strong>₹2,84,320</strong>
+                  <span>▲ ₹12,400</span>
+                </div>
+                <div class="ps-mf-chart-area">
+                  <div class="ps-mf-bar" style="height:48%"></div>
+                  <div class="ps-mf-bar" style="height:62%; animation-delay:0.3s"></div>
+                  <div class="ps-mf-bar" style="height:55%; animation-delay:0.6s"></div>
+                  <div class="ps-mf-bar" style="height:78%; animation-delay:0.9s"></div>
+                  <div class="ps-mf-bar" style="height:68%; animation-delay:1.2s"></div>
+                  <div class="ps-mf-bar" style="height:91%; animation-delay:1.5s"></div>
+                  <div class="ps-mf-bar" style="height:84%; animation-delay:1.8s"></div>
+                </div>
+                <div class="ps-mf-funds">
+                  <div class="ps-mf-fund-row">
+                    <span class="ps-mf-fund-dot" style="background:#22c55e"></span>
+                    <span class="ps-mf-fund-name">Nifty 50 Index Fund</span>
+                    <span class="ps-mf-fund-gain">+22.1%</span>
+                  </div>
+                  <div class="ps-mf-fund-row">
+                    <span class="ps-mf-fund-dot" style="background:#3B82F6"></span>
+                    <span class="ps-mf-fund-name">ELSS Tax Saver</span>
+                    <span class="ps-mf-fund-gain">+14.7%</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </ng-container>
 
-            <!-- Floating mini-cards -->
-            <div class="ps-floating" aria-hidden="true">
-              <div class="ps-float ps-f1">
-                <span class="ps-f-label">{{ p.floats[0].label }}</span>
-                <span class="ps-f-value">{{ p.floats[0].value }}</span>
+            <!-- FASTag Dashboard -->
+            <ng-container *ngIf="p.visual === 'fastag'">
+              <div class="ps-fastag-dashboard">
+                <div class="ps-fastag-card-3d">
+                  <div class="ps-fastag-card-chip"></div>
+                  <div class="ps-fastag-bal-label">Available Balance</div>
+                  <div class="ps-fastag-bal-value">₹3,850</div>
+                  <div class="ps-fastag-card-logo">FASTag</div>
+                </div>
+                <div class="ps-fastag-stats-row">
+                  <div class="ps-fastag-stat">
+                    <strong>124</strong><span>Trips</span>
+                  </div>
+                  <div class="ps-fastag-stat">
+                    <strong>₹0</strong><span>Penalty</span>
+                  </div>
+                  <div class="ps-fastag-stat">
+                    <strong>Auto</strong><span>Recharge</span>
+                  </div>
+                </div>
               </div>
-              <div class="ps-float ps-f2">
-                <span class="ps-f-label">{{ p.floats[1].label }}</span>
-                <span class="ps-f-value">{{ p.floats[1].value }}</span>
+            </ng-container>
+
+            <!-- Drone Dashboard -->
+            <ng-container *ngIf="p.visual === 'drone'">
+              <div class="ps-drone-dashboard">
+                <div class="ps-drone-topbar">
+                  <span class="ps-drone-label">Aerial Survey</span>
+                  <span class="ps-drone-alt">Alt: 120m</span>
+                </div>
+                <div class="ps-drone-field">
+                  <div class="ps-drone-scan"></div>
+                  <div class="ps-drone-icon">🚁</div>
+                </div>
+                <div class="ps-drone-stats">
+                  <div class="ps-drone-stat">
+                    <strong>4.2ha</strong><span>Area</span>
+                  </div>
+                  <div class="ps-drone-stat">
+                    <strong>98%</strong><span>Coverage</span>
+                  </div>
+                  <div class="ps-drone-stat">
+                    <strong>18L/hr</strong><span>Spray</span>
+                  </div>
+                </div>
               </div>
-              <div class="ps-float ps-f3">
-                <span class="ps-f-label">{{ p.floats[2].label }}</span>
-                <span class="ps-f-value">{{ p.floats[2].value }}</span>
-              </div>
-            </div>
+            </ng-container>
           </div>
 
-          <!-- RIGHT: content -->
+          <!-- ── RIGHT: Content ── -->
           <div class="ps-content">
             <div class="ps-tagline">
-              <span class="ps-subtle-dot" [style.background]="p.accent" aria-hidden="true"></span>
+              <span class="ps-subtle-dot" [style.background]="p.accent"
+                [style.box-shadow]="'0 0 8px ' + p.accent + '80'"></span>
               <span class="ps-tag-text">Product</span>
             </div>
 
@@ -102,16 +170,28 @@
 
             <ul class="ps-features">
               <li *ngFor="let f of p.features">
-                <span class="ps-check" aria-hidden="true"></span>
+                <span class="ps-check" aria-hidden="true"
+                  [style.background]="p.accent + '18'"
+                  [style.border-color]="p.accent + '40'">
+                </span>
                 <span>{{ f }}</span>
               </li>
             </ul>
 
-            <button type="button" class="ps-arrow-btn" (click)="openProduct(p.id); $event.stopPropagation()">
-              <span class="ps-arrow-text">Explore</span>
-              <span class="ps-arrow" aria-hidden="true">→</span>
-            </button>
+            <div class="ps-cta-row">
+              <button type="button" class="ps-enquiry-btn"
+                [style.background]="'linear-gradient(135deg,' + p.accent + ',#6366F1)'"
+                (click)="openEnquiry(p.id, $event)">
+                {{ p.enquiryCta }}
+              </button>
+              <button type="button" class="ps-arrow-btn"
+                (click)="openProduct(p.id); $event.stopPropagation()">
+                <span class="ps-arrow-text">Explore</span>
+                <span class="ps-arrow">→</span>
+              </button>
+            </div>
           </div>
+
         </div>
       </article>
     </div>

@@ -2,6 +2,8 @@
   Component,
   AfterViewInit,
   OnDestroy,
+  Output,
+  EventEmitter,
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,6 +12,7 @@ import { NavService } from '../../services/nav.service';
 type TabKey = 'sip' | 'goal';
 
 interface PricingPlan {
+  id?: number;
   name: string;
   sip: string;
   sipLabel: string;
@@ -82,7 +85,11 @@ interface PricingPlan {
           *ngFor="let plan of activePlans; let i = index"
           class="plan-card"
           [class.highlighted]="plan.highlight"
+          [class.active]="selectedPlanId === (plan.id || i)"
           [style.animation-delay]="(i * 80) + 'ms'"
+          (click)="selectPlan(plan, i)"
+          role="button"
+          [attr.aria-pressed]="selectedPlanId === (plan.id || i)"
         >
           <!-- Popular badge -->
           <div *ngIf="plan.badge" class="popular-badge">
@@ -324,17 +331,30 @@ interface PricingPlan {
       flex-direction: column;
       gap: 0;
       overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), 
+                  box-shadow 0.35s ease, 
+                  border-color 0.35s ease,
+                  background 0.35s ease;
       animation: cardFadeUp 0.5s ease both;
+      cursor: pointer;
     }
     @keyframes cardFadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: none; }
     }
     .plan-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-6px);
       box-shadow: 0 16px 48px rgba(0,0,0,0.3);
       border-color: rgba(0,212,255,0.2);
+    }
+    .plan-card.active {
+      border-color: rgba(0,212,255,0.6);
+      background: linear-gradient(160deg, rgba(0,212,255,0.12) 0%, var(--bg-card) 60%);
+      box-shadow:
+        0 0 0 1px rgba(0,212,255,0.3),
+        0 0 32px rgba(0,212,255,0.25),
+        0 16px 64px rgba(0,212,255,0.2);
+      transform: translateY(-8px) scale(1.02);
     }
     .plan-card.highlighted {
       border-color: rgba(0,212,255,0.4);
@@ -347,6 +367,14 @@ interface PricingPlan {
       box-shadow:
         0 0 0 1px rgba(0,212,255,0.25),
         0 20px 64px rgba(0,212,255,0.2);
+    }
+    .plan-card.highlighted.active {
+      border-color: rgba(0,212,255,0.65);
+      background: linear-gradient(160deg, rgba(0,212,255,0.16) 0%, var(--bg-card) 55%);
+      box-shadow:
+        0 0 0 2px rgba(0,212,255,0.4),
+        0 0 40px rgba(0,212,255,0.3),
+        0 20px 80px rgba(0,212,255,0.25);
     }
 
     /* Popular badge */
@@ -557,12 +585,16 @@ interface PricingPlan {
 export class MutualFundPricingComponent implements AfterViewInit, OnDestroy {
   nav = inject(NavService);
 
+  @Output() planSelected = new EventEmitter<{ plan: PricingPlan; planIndex: number; tabKey: TabKey }>();
+
   activeTab: TabKey = 'sip';
   visible = true;
+  selectedPlanId: number | null = 0;
   private obs: IntersectionObserver | null = null;
 
   readonly sipPlans: PricingPlan[] = [
     {
+      id: 0,
       name: 'Starter Plan',
       sip: '₹1000',
       sipLabel: '/ month',
@@ -579,6 +611,7 @@ export class MutualFundPricingComponent implements AfterViewInit, OnDestroy {
       cta: 'Start SIP',
     },
     {
+      id: 1,
       name: 'Growth Plan',
       sip: '₹2,000',
       sipLabel: '/ month',
@@ -598,6 +631,7 @@ export class MutualFundPricingComponent implements AfterViewInit, OnDestroy {
       cta: 'Start SIP',
     },
     {
+      id: 2,
       name: 'Premium Plan',
       sip: '₹5,000+',
       sipLabel: '/ month',
@@ -618,6 +652,7 @@ export class MutualFundPricingComponent implements AfterViewInit, OnDestroy {
 
   readonly goalPlans: PricingPlan[] = [
     {
+      id: 3,
       name: 'Short‑Term Goals',
       sip: '₹1,000',
       sipLabel: '/ month',
@@ -634,6 +669,7 @@ export class MutualFundPricingComponent implements AfterViewInit, OnDestroy {
       cta: 'Set Goal',
     },
     {
+      id: 4,
       name: 'Balanced Growth',
       sip: '₹2,500',
       sipLabel: '/ month',
@@ -653,6 +689,7 @@ export class MutualFundPricingComponent implements AfterViewInit, OnDestroy {
       cta: 'Set Goal',
     },
     {
+      id: 5,
       name: 'Long‑Term Wealth',
       sip: '₹5,000',
       sipLabel: '/ month',
@@ -686,6 +723,12 @@ export class MutualFundPricingComponent implements AfterViewInit, OnDestroy {
 
   setTab(tab: TabKey): void {
     this.activeTab = tab;
+    this.selectedPlanId = 0;
+  }
+
+  selectPlan(plan: PricingPlan, index: number): void {
+    this.selectedPlanId = plan.id ?? index;
+    this.planSelected.emit({ plan, planIndex: index, tabKey: this.activeTab });
   }
 
   ngAfterViewInit(): void {

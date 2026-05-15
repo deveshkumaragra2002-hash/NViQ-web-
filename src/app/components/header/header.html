@@ -1,4 +1,4 @@
-<header class="header" [class.scrolled]="scrolled()">
+﻿<header class="header" [class.scrolled]="scrolled()">
   <div class="header-inner">
     <!-- Logo -->
     <a routerLink="/" class="logo" (click)="closeMobile()">
@@ -29,8 +29,8 @@
 
     <!-- CTA -->
     <div class="header-actions">
-      <a routerLink="/contact" class="btn-ghost-sm">Get Demo</a>
-      <a routerLink="/contact" class="btn-primary-sm">Start Free</a>
+      <button type="button" class="btn-ghost-sm" (click)="openModal()">Get Demo</button>
+      <button type="button" class="btn-primary-sm" (click)="openModal()">Start Free</button>
     </div>
 
     <!-- Mobile Hamburger -->
@@ -49,7 +49,7 @@
     <a routerLink="/pricing" (click)="closeMobile()">Pricing</a>
     <a routerLink="/contact" (click)="closeMobile()">Contact</a>
     <div class="mobile-cta">
-      <a routerLink="/contact" class="btn-primary" (click)="closeMobile()">Start Free Trial</a>
+      <button type="button" class="btn-primary" (click)="openModal(); closeMobile()">Start Free Trial</button>
     </div>
   </div>
 </header>

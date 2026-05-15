@@ -1,8 +1,9 @@
 import {
   AfterViewInit, Component, ElementRef, EventEmitter,
-  OnDestroy, OnInit, Output, ViewChild
+  OnDestroy, OnInit, Output, ViewChild, inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NavService } from '../../services/nav.service';
 
 @Component({
   selector: 'app-hero-section',
@@ -72,7 +73,7 @@ import { CommonModule } from '@angular/common';
 
         <!-- CTAs -->
         <div class="hero-ctas" [class.reveal]="vis" style="transition-delay:320ms">
-          <button class="btn-primary-hero ripple-btn" (click)="onRipple($event); openModal.emit()" type="button">
+          <button class="btn-primary-hero ripple-btn" (click)="onRipple($event); openLeadModal()" type="button">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
             Start Free Trial
           </button>
@@ -361,6 +362,11 @@ import { CommonModule } from '@angular/common';
 export class HeroSectionComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() openModal = new EventEmitter<void>();
   @ViewChild('particleCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+  private nav = inject(NavService);
+
+  openLeadModal(): void {
+    this.nav.openModalFor(this.nav.product() ?? 'mf');
+  }
 
   vis = false;
   private rafId: number | null = null;

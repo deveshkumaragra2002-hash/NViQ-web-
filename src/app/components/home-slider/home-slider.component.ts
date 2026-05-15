@@ -344,126 +344,143 @@ interface Particle {
           </div>
 
           <!-- Content -->
-          <div class="slide-content" [class.visible]="i === current">
+          <div class="slide-content" [class.visible]="i === current" [class.mf-split]="slide.id === 'mf'">
 
-            <div class="slide-tag"
-              [style.border-color]="slide.accent + '44'"
-              [style.color]="slide.accent">
-              <span class="tag-dot" [style.background]="slide.accent"></span>
-              {{ slide.tag }}
-            </div>
-
-            <div class="slide-icon-ring"
-              [style.border-color]="slide.accent + '33'"
-              [style.background]="slide.accentDim">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                [attr.stroke]="slide.accent" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path [attr.d]="slide.iconPath"/>
-              </svg>
-            </div>
-
-            <h1 class="slide-heading">
-              <span class="slide-h1" [class.gradient-heading]="slide.gradientHeading">
-                {{ slide.heading }}
-              </span>
-            </h1>
-            <p class="slide-sub">{{ slide.sub }}</p>
-
-            <!-- Extra description (company slide) -->
-            <p *ngIf="slide.desc" class="slide-desc">{{ slide.desc }}</p>
-
-            <!-- Contact info (contact slide) -->
-            <div *ngIf="slide.type === 'contact'" class="slide-contact-info">
-              <div class="sci-row">
-                <span class="sci-icon" [style.color]="slide.accent">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.77 3.35 2 2 0 0 1 3.74 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.72a16 16 0 0 0 6.15 6.15l1.14-1.14a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-                  </svg>
-                </span>
-                <span class="sci-value">{{ slide.phone }}</span>
+            <!-- Left column (text) -->
+            <div [class]="slide.id === 'mf' ? 'mf-left-col' : 'slide-inner-col'">
+              <div class="slide-tag"
+                [style.border-color]="slide.accent + '44'"
+                [style.color]="slide.accent">
+                <span class="tag-dot" [style.background]="slide.accent"></span>
+                {{ slide.tag }}
               </div>
-              <div class="sci-row">
-                <span class="sci-icon" [style.color]="slide.accent">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                    <polyline points="22,6 12,13 2,6"/>
-                  </svg>
-                </span>
-                <span class="sci-value">{{ slide.email }}</span>
+
+              <div class="slide-icon-ring"
+                [style.border-color]="slide.accent + '33'"
+                [style.background]="slide.accentDim">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
+                  [attr.stroke]="slide.accent" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path [attr.d]="slide.iconPath"/>
+                </svg>
               </div>
-              <p class="sci-msg">Drop us a message — we respond within 24 hours.</p>
+
+              <h1 class="slide-heading">
+                <span class="slide-h1" [class.gradient-heading]="slide.gradientHeading">
+                  {{ slide.heading }}
+                </span>
+              </h1>
+              <p class="slide-sub">{{ slide.sub }}</p>
+
+              <!-- Extra description (company slide) -->
+              <p *ngIf="slide.desc" class="slide-desc">{{ slide.desc }}</p>
+
+              <!-- Contact info (contact slide) -->
+              <div *ngIf="slide.type === 'contact'" class="slide-contact-info">
+                <div class="sci-row">
+                  <span class="sci-icon" [style.color]="slide.accent">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.77 3.35 2 2 0 0 1 3.74 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.72a16 16 0 0 0 6.15 6.15l1.14-1.14a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                  </span>
+                  <span class="sci-value">{{ slide.phone }}</span>
+                </div>
+                <div class="sci-row">
+                  <span class="sci-icon" [style.color]="slide.accent">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                  </span>
+                  <span class="sci-value">{{ slide.email }}</span>
+                </div>
+                <p class="sci-msg">Drop us a message — we respond within 24 hours.</p>
+              </div>
+
+              <!-- Coming Soon badge -->
+              <div *ngIf="slide.type === 'coming-soon'" class="cs-badge"
+                [style.border-color]="slide.accent + '55'"
+                [style.color]="slide.accent">
+                <span class="cs-pulse" [style.background]="slide.accent"></span>
+                🚀 Coming Soon
+              </div>
+
+              <!-- CTA button (product / company / contact) -->
+              <button *ngIf="slide.cta" class="slide-cta" type="button"
+                (click)="onCta(slide)"
+                style="background:linear-gradient(135deg,#3B82F6,#2563EB)">
+                {{ slide.cta }}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
             </div>
 
-            <!-- Coming Soon badge -->
-            <div *ngIf="slide.type === 'coming-soon'" class="cs-badge"
-              [style.border-color]="slide.accent + '55'"
-              [style.color]="slide.accent">
-              <span class="cs-pulse" [style.background]="slide.accent"></span>
-              🚀 Coming Soon
-            </div>
-
-            <!-- CTA button (product / company / contact) -->
-            <button *ngIf="slide.cta" class="slide-cta" type="button"
-              (click)="onCta(slide)"
-              style="background:linear-gradient(135deg,#3B82F6,#2563EB)">
-              {{ slide.cta }}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
-
-          </div>
-
-          <!-- SIP Calculator — MF slide only, above slide-content z-index -->
-          <ng-container *ngIf="slide.id === 'mf'">
-            <div class="sa-calc-wrap sa-px">
-              <div class="sa-calc-float">
-                <div class="sa-calc-card">
-                  <div class="sa-calc-title">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="3" width="20" height="18" rx="3"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+            <!-- Right column: SIP Calculator (MF slide only) -->
+            <ng-container *ngIf="slide.id === 'mf'">
+              <div class="mf-right-col" (click)="$event.stopPropagation()">
+                <div class="sip-card">
+                  <div class="sip-header">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="18" rx="3"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
                     SIP Calculator
                   </div>
-                  <div class="sa-calc-row">
-                    <span class="sa-calc-label">Monthly</span>
-                    <span class="sa-calc-val">₹5,000</span>
-                  </div>
-                  <div class="sa-calc-bar-wrap">
-                    <div class="sa-calc-bar"><div class="sa-calc-bar-fill" style="width:45%"></div></div>
-                  </div>
-                  <div class="sa-calc-row">
-                    <span class="sa-calc-label">Duration</span>
-                    <span class="sa-calc-val">10 yrs</span>
-                  </div>
-                  <div class="sa-calc-bar-wrap">
-                    <div class="sa-calc-bar"><div class="sa-calc-bar-fill" style="width:65%"></div></div>
-                  </div>
-                  <div class="sa-calc-row">
-                    <span class="sa-calc-label">Expected Return</span>
-                    <span class="sa-calc-val sa-calc-rate">12% p.a.</span>
-                  </div>
-                  <div class="sa-calc-bar-wrap">
-                    <div class="sa-calc-bar"><div class="sa-calc-bar-fill" style="width:55%"></div></div>
-                  </div>
-                  <div class="sa-calc-divider"></div>
-                  <div class="sa-calc-result-row">
-                    <div>
-                      <div class="sa-calc-res-label">Invested</div>
-                      <div class="sa-calc-res-val">₹6.0 L</div>
+
+                  <div class="sip-field">
+                    <div class="sip-field-row">
+                      <span class="sip-label">Monthly Investment</span>
+                      <span class="sip-val">₹{{ sipAmount | number }}</span>
                     </div>
-                    <div class="sa-calc-arrow">→</div>
-                    <div>
-                      <div class="sa-calc-res-label">Est. Returns</div>
-                      <div class="sa-calc-res-val sa-calc-gain">₹11.6 L</div>
+                    <input type="range" class="sip-range" min="1000" max="500000" step="1000"
+                      [value]="sipAmount" (input)="sipAmount = +$any($event.target).value">
+                    <div class="sip-range-bounds"><span>₹1,000</span><span>₹5,00,000</span></div>
+                  </div>
+
+                  <div class="sip-field">
+                    <div class="sip-field-row">
+                      <span class="sip-label">Duration</span>
+                      <span class="sip-val">{{ sipYears }} yrs</span>
                     </div>
+                    <input type="range" class="sip-range" min="1" max="30" step="1"
+                      [value]="sipYears" (input)="sipYears = +$any($event.target).value">
+                    <div class="sip-range-bounds"><span>1 yr</span><span>30 yrs</span></div>
+                  </div>
+
+                  <div class="sip-field">
+                    <div class="sip-field-row">
+                      <span class="sip-label">Expected Return</span>
+                      <span class="sip-val sip-rate">{{ sipRate }}% p.a.</span>
+                    </div>
+                    <input type="range" class="sip-range" min="0" max="30" step="0.5"
+                      [value]="sipRate" (input)="sipRate = +$any($event.target).value">
+                    <div class="sip-range-bounds"><span>0%</span><span>30%</span></div>
+                  </div>
+
+                  <div class="sip-divider"></div>
+
+                  <div class="sip-results">
+                    <div class="sip-res-item">
+                      <div class="sip-res-label">Invested</div>
+                      <div class="sip-res-val">₹{{ sipResult.invested | number }}</div>
+                    </div>
+                    <div class="sip-res-arrow">→</div>
+                    <div class="sip-res-item">
+                      <div class="sip-res-label">Est. Returns</div>
+                      <div class="sip-res-val sip-gain">₹{{ sipResult.maturity | number }}</div>
+                    </div>
+                  </div>
+
+                  <div class="sip-gain-tag">
+                    <span class="sip-gain-dot"></span>
+                    Wealth Gained: ₹{{ sipResult.gains | number }}
                   </div>
                 </div>
               </div>
-            </div>
-          </ng-container>
+            </ng-container>
+
+          </div>
 
         </div>
       </div>
@@ -484,7 +501,7 @@ interface Particle {
       <!-- Progress bar -->
       <div class="progress-bar">
         <div class="progress-fill"
-          [style.transition-duration]="'5000ms'"
+          [style.transition-duration]="'2000ms'"
           [class.running]="running">
         </div>
       </div>
@@ -495,7 +512,8 @@ interface Particle {
     /* ── Root ──────────────────────────────────────────── */
     .slider-root {
       position: relative; width: 100%;
-      height: 100vh; overflow: hidden;
+      height: 100vh;
+      overflow: hidden;
       background: #0A0A0A;
     }
 
@@ -507,17 +525,27 @@ interface Particle {
     }
 
     /* ── Slides ─────────────────────────────────────────── */
-    .slides-wrap { position: absolute; inset: 0; }
+    .slides-wrap {
+      position: absolute; inset: 0;
+      overflow: hidden;
+    }
 
     .slide {
       position: absolute; inset: 0;
+      overflow: hidden;
       opacity: 0; transition: opacity 1.2s ease;
       pointer-events: none;
     }
     .slide.active { opacity: 1; pointer-events: auto; }
 
-    .slide-bg-img-wrap { position: absolute; inset: -8%; z-index: 0; transform-style: preserve-3d; }
-    .slide-bg-img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); transition: transform 0.18s ease-out; }
+    .slide-bg-img-wrap {
+      position: absolute; inset: 0; z-index: 0;
+      overflow: hidden;
+    }
+    .slide-bg-img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+    }
     .slide-bg  { position: absolute; inset: 0; z-index: 1; }
 
     .slide-grid {
@@ -548,12 +576,13 @@ interface Particle {
 
     /* ── Content — sits above particle canvas ───────────── */
     .slide-content {
-      position: relative; z-index: 20;
-      height: 100%;
+      position: absolute; inset: 0; z-index: 20;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center;
-      padding: 100px 24px 80px;
+      padding: 80px 5% 72px;
+      box-sizing: border-box;
+      overflow: hidden;
       opacity: 0; transition: opacity 0.5s ease 0.4s;
     }
     .slide-content.visible { opacity: 1; }
@@ -566,7 +595,8 @@ interface Particle {
       backdrop-filter: blur(8px);
       font-size: 11px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.12em;
-      margin-bottom: 32px;
+      margin-bottom: clamp(16px,2.5vh,28px);
+      flex-shrink: 0;
     }
     .tag-dot {
       width: 6px; height: 6px; border-radius: 50%;
@@ -576,10 +606,11 @@ interface Particle {
 
     /* Icon */
     .slide-icon-ring {
-      width: 80px; height: 80px;
-      border-radius: 22px; border: 1px solid;
+      width: 70px; height: 70px;
+      border-radius: 20px; border: 1px solid;
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 28px;
+      margin-bottom: clamp(14px,2vh,24px);
+      flex-shrink: 0;
       animation: iconPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.6s both;
     }
     @keyframes iconPop {
@@ -588,12 +619,12 @@ interface Particle {
     }
 
     /* Heading */
-    .slide-heading { margin-bottom: 16px; }
+    .slide-heading { margin-bottom: clamp(10px,1.5vh,16px); }
     .slide-h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: clamp(3rem, 8vw, 7.5rem);
+      font-size: clamp(2.4rem, 5.5vw, 5.5rem);
       font-weight: 900; letter-spacing: -0.04em;
-      line-height: 0.95; display: block; color: #fff;
+      line-height: 1.0; display: block; color: #fff;
     }
     .gradient-heading {
       background: linear-gradient(120deg, #2563EB 0%, #3B82F6 40%, #93C5FD 100%);
@@ -605,9 +636,9 @@ interface Particle {
     /* Sub */
     .slide-sub {
       color: rgba(255,255,255,0.6);
-      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-      line-height: 1.7; max-width: 560px;
-      margin: 0 auto 40px;
+      font-size: clamp(0.9rem, 1.3vw, 1.08rem);
+      line-height: 1.65; max-width: 520px;
+      margin: 0 auto clamp(20px,3.5vh,36px);
     }
 
     /* CTA */
@@ -634,6 +665,121 @@ interface Particle {
     .slide-cta svg { transition: transform 0.2s ease; }
     .slide-cta:hover svg { transform: translateX(4px); }
 
+    /* ── MF Two-Column Layout ──────────────────────────── */
+    .slide-content.mf-split {
+      flex-direction: row;
+      text-align: left;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 5% 72px;
+      gap: clamp(24px,4vw,48px);
+    }
+    .mf-left-col {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: flex-start;
+      max-width: 520px; min-width: 0;
+    }
+    .mf-left-col .slide-sub { margin: 0 0 clamp(20px,3vh,36px); }
+    .mf-left-col .slide-tag { margin-bottom: clamp(14px,2vh,24px); }
+    .mf-right-col {
+      flex: 0 0 clamp(280px,28vw,340px);
+      pointer-events: auto;
+      min-width: 0;
+    }
+    .slide-inner-col {
+      display: contents;
+    }
+
+    /* ── SIP Calculator Card ───────────────────────────── */
+    .sip-card {
+      background: rgba(6,12,28,0.82);
+      border: 1px solid rgba(59,130,246,0.28);
+      border-radius: 20px;
+      padding: 24px 22px 20px;
+      backdrop-filter: blur(20px);
+      box-shadow:
+        0 0 0 1px rgba(59,130,246,0.08),
+        0 20px 60px rgba(0,0,0,0.55),
+        0 0 80px rgba(59,130,246,0.07);
+    }
+    .sip-header {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: #93C5FD; margin-bottom: 20px;
+    }
+    .sip-field { margin-bottom: 16px; }
+    .sip-field-row {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 6px;
+    }
+    .sip-label { font-size: 11px; color: rgba(255,255,255,0.4); }
+    .sip-val   { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); }
+    .sip-rate  { color: #60A5FA; }
+
+    .sip-range {
+      -webkit-appearance: none;
+      width: 100%; height: 4px; border-radius: 99px;
+      background: rgba(255,255,255,0.1);
+      outline: none; cursor: pointer;
+    }
+    .sip-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: linear-gradient(135deg, #3B82F6, #60A5FA);
+      border: 2px solid rgba(255,255,255,0.9);
+      box-shadow: 0 0 10px rgba(59,130,246,0.5);
+      cursor: pointer;
+    }
+    .sip-range-bounds {
+      display: flex; justify-content: space-between;
+      font-size: 9px; color: rgba(255,255,255,0.25);
+      margin-top: 4px;
+    }
+
+    .sip-divider {
+      height: 1px; background: rgba(59,130,246,0.15);
+      margin: 16px 0;
+    }
+    .sip-results {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .sip-res-item { text-align: center; }
+    .sip-res-label {
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.3); margin-bottom: 4px;
+    }
+    .sip-res-val {
+      font-size: 18px; font-weight: 800;
+      color: rgba(255,255,255,0.9);
+      font-family: 'Outfit', sans-serif;
+    }
+    .sip-gain  { color: #34D399; }
+    .sip-res-arrow { font-size: 18px; color: rgba(59,130,246,0.45); }
+
+    .sip-gain-tag {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(52,211,153,0.08);
+      border: 1px solid rgba(52,211,153,0.2);
+      border-radius: 10px; padding: 8px 14px;
+      font-size: 12px; font-weight: 700; color: #34D399;
+    }
+    .sip-gain-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #34D399;
+      animation: tdp 1.8s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .slide-content.mf-split { flex-direction: column; text-align: center; padding: clamp(72px,10vh,96px) 24px clamp(56px,7vh,72px); gap: 24px; }
+      .mf-left-col { align-items: center; }
+      .mf-left-col .slide-sub { margin: 0 auto 24px; }
+      .mf-right-col { flex: none; width: 100%; max-width: 360px; }
+    }
+
     /* ── Dots ───────────────────────────────────────────── */
     .slider-dots {
       position: absolute; bottom: 36px; left: 50%;
@@ -658,7 +804,7 @@ interface Particle {
     .progress-fill {
       height: 100%; width: 0%;
       background: linear-gradient(90deg, #2563EB, #3B82F6);
-      transition: width 5000ms linear;
+      transition: width 2000ms linear;
     }
     .progress-fill.running { width: 100%; }
 
@@ -863,74 +1009,6 @@ interface Particle {
       95%,100%{ transform: scaleY(0); }
     }
 
-    /* ── MF: SIP Calculator card ─────────────────────── */
-    .sa-calc-wrap {
-      position: absolute; top: 96px; right: 4%;
-      z-index: 25; transform-style: preserve-3d;
-      pointer-events: none;
-    }
-    .sa-calc-float {
-      animation: saCalcFloat 5s ease-in-out infinite;
-    }
-    @keyframes saCalcFloat {
-      0%,100% { transform: translateY(0)    rotateX(4deg)  rotateY(-6deg); }
-      50%     { transform: translateY(-14px) rotateX(-3deg) rotateY(5deg); }
-    }
-    .sa-calc-card {
-      width: 210px;
-      background: rgba(10,15,30,0.72);
-      border: 1px solid rgba(59,130,246,0.28);
-      border-radius: 16px;
-      padding: 16px 16px 14px;
-      backdrop-filter: blur(18px);
-      box-shadow:
-        0 0 0 1px rgba(59,130,246,0.1),
-        0 8px 40px rgba(0,0,0,0.55),
-        0 0 60px rgba(59,130,246,0.08);
-    }
-    .sa-calc-title {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
-      color: #93C5FD; margin-bottom: 14px;
-      text-transform: uppercase;
-    }
-    .sa-calc-row {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 4px;
-    }
-    .sa-calc-label { font-size: 10px; color: rgba(255,255,255,0.4); }
-    .sa-calc-val   { font-size: 11px; color: rgba(255,255,255,0.85); font-weight: 600; }
-    .sa-calc-rate  { color: #60A5FA; }
-    .sa-calc-bar-wrap { margin-bottom: 10px; }
-    .sa-calc-bar {
-      height: 4px; border-radius: 99px;
-      background: rgba(255,255,255,0.07);
-    }
-    .sa-calc-bar-fill {
-      height: 100%; border-radius: 99px;
-      background: linear-gradient(90deg, #2563EB, #60A5FA);
-      animation: saCalcBarIn 1.2s cubic-bezier(0.22,1,0.36,1) both;
-    }
-    @keyframes saCalcBarIn {
-      from { transform: scaleX(0); transform-origin: left; }
-      to   { transform: scaleX(1); transform-origin: left; }
-    }
-    .sa-calc-divider {
-      height: 1px; background: rgba(59,130,246,0.15);
-      margin: 10px 0;
-    }
-    .sa-calc-result-row {
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .sa-calc-res-label {
-      font-size: 9px; color: rgba(255,255,255,0.35);
-      margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.05em;
-    }
-    .sa-calc-res-val {
-      font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.85);
-    }
-    .sa-calc-gain  { color: #34D399; }
-    .sa-calc-arrow { font-size: 16px; color: rgba(59,130,246,0.5); }
 
     /* ── FASTag: Horizontal speed lines ──────────────── */
     .sa-ft-line {
@@ -1098,12 +1176,14 @@ interface Particle {
     /* ── 3D Video Mockup ────────────────────────────────── */
     .vid-outer {
       position: absolute;
-      right: 3%;
-      top: 0; bottom: 0;
+      right: 2%;
+      top: 50%; transform: translateY(-50%);
       display: flex; align-items: center;
       z-index: 8;
       pointer-events: none;
-      width: 44%;
+      width: 42%;
+      max-height: 80vh;
+      overflow: hidden;
     }
     .vid-scene {
       width: 100%;
@@ -1318,12 +1398,26 @@ interface Particle {
     @media (max-width: 1100px) {
       .vid-outer { display: none; }
     }
+    @media (max-width: 1024px) {
+      .slide-content.mf-split { flex-direction: column; text-align: center; padding: 80px 24px 72px; gap: 20px; }
+      .mf-left-col { align-items: center; }
+      .mf-left-col .slide-sub { margin: 0 auto 20px; }
+      .mf-right-col { flex: none; width: 100%; max-width: 340px; }
+    }
     @media (max-width: 768px) {
-      .slide-icon-ring { width: 60px; height: 60px; border-radius: 16px; }
+      .slider-root { height: 100svh; }
+      .slide-content { padding: 72px 20px 60px; }
+      .slide-icon-ring { width: 52px; height: 52px; border-radius: 14px; }
+      .slide-h1 { font-size: clamp(1.9rem, 7vw, 2.8rem); }
       .sci-row { padding: 7px 14px; }
       .sa-ft-card { width: 160px; height: 100px; }
       .sa-drone-svg { width: 200px; }
       .sa-drone-float { margin-left: -100px; }
+    }
+    @media (max-width: 480px) {
+      .slide-content { padding: 68px 16px 56px; }
+      .slide-h1 { font-size: clamp(1.7rem, 8vw, 2.4rem); }
+      .slide-sub { font-size: 0.86rem; }
     }
   `]
 })
@@ -1334,11 +1428,42 @@ export class HomeSliderComponent implements OnInit, AfterViewInit, OnDestroy {
   running = false;
   private paused = false;
 
+  sipAmount = 5000;
+  sipYears  = 10;
+  sipRate   = 12;
+
+  get sipResult() {
+    const P = this.sipAmount;
+    const r = this.sipRate / 12 / 100;
+    const n = this.sipYears * 12;
+    const M = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+    const invested = P * n;
+    return {
+      invested: Math.round(invested),
+      maturity: Math.round(M),
+      gains:    Math.round(M - invested),
+    };
+  }
+
   private intervalId: ReturnType<typeof setInterval> | null = null;
   private rafId = 0;
   private cleanupAll?: () => void;
 
   slides: Slide[] = [
+    {
+      type: 'product',
+      id: 'gps',
+      heading: 'Drive with Data',
+      sub: 'Real-time GPS intelligence for every vehicle in your fleet — live location, smart alerts, and route analytics.',
+      cta: 'Explore Fleet Platform',
+      accent: '#3B82F6',
+      accentDim: 'rgba(59,130,246,0.12)',
+      bg: 'linear-gradient(135deg,rgba(5,10,20,0.78) 0%,rgba(9,22,40,0.68) 50%,rgba(4,12,26,0.78) 100%)',
+      bgImg: '/images/gps-hero.jpg.jpg',
+      iconPath: 'M12 21s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10zM12 11m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0',
+      tag: 'GPS Tracking',
+      videoSrc: 'assets/videos/gps-demo.mp4',
+    },
     {
       type: 'product',
       id: 'mf',
@@ -1353,20 +1478,6 @@ export class HomeSliderComponent implements OnInit, AfterViewInit, OnDestroy {
       tag: 'Mutual Funds',
       gradientHeading: true,
       videoSrc: 'assets/videos/mf-demo.mp4',
-    },
-    {
-      type: 'product',
-      id: 'gps',
-      heading: 'Drive with Data',
-      sub: 'Real-time GPS intelligence for every vehicle in your fleet — live location, smart alerts, and route analytics.',
-      cta: 'Explore Fleet Platform',
-      accent: '#3B82F6',
-      accentDim: 'rgba(59,130,246,0.12)',
-      bg: 'linear-gradient(135deg,rgba(5,10,20,0.78) 0%,rgba(9,22,40,0.68) 50%,rgba(4,12,26,0.78) 100%)',
-      bgImg: '/images/gps-hero.jpg.jpg',
-      iconPath: 'M12 21s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10zM12 11m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0',
-      tag: 'GPS Tracking',
-      videoSrc: 'assets/videos/gps-demo.mp4',
     },
     {
       type: 'coming-soon',
@@ -1414,7 +1525,7 @@ export class HomeSliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ngZone.runOutsideAngular(() => {
       this.intervalId = setInterval(() => {
         if (!this.paused) this.ngZone.run(() => this.next());
-      }, 5000);
+      }, 2000);
     });
   }
 
@@ -1579,7 +1690,7 @@ export class HomeSliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onCta(slide: Slide): void {
     if (slide.type === 'product' && slide.id) {
-      this.nav.go('product-detail', slide.id);
+      this.nav.go('product-detail', slide.id as ProductKey);
     } else if (slide.navPage) {
       this.nav.go(slide.navPage);
     }
